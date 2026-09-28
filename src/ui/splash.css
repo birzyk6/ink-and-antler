@@ -1,0 +1,6 @@
+.splash { position: fixed; inset: 0; z-index: 100; display: grid; place-content: center; justify-items: center; gap: 16px; background: var(--letterbox); font-size: 20px; }
+.splash-d20 {
+  width: 72px; height: 72px; display: grid; place-items: center; background: var(--red); color: #fff6dc; font-size: 28px;
+  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  animation: spin 0.6s steps(6) infinite;
+}
