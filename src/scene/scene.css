@@ -1,0 +1,4 @@
+.scene-host { position: fixed; inset: 0; z-index: 0; }
+.scene-host canvas { display: block; }
+/* World-sized DOM box positioned by the scene; children use world px. */
+.anchor { position: fixed; left: 0; top: 0; z-index: 5; transform-origin: 0 0; }
