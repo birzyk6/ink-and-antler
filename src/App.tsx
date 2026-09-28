@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { lazy, Suspense, useState } from 'react';
 import { SIGN_NAME, SIGN_SUBTITLE } from './content/copy';
 import { DialoguePanel } from './dialogue/DialoguePanel';
 import { useGame } from './game/store';
@@ -8,7 +8,6 @@ import { SceneCanvas } from './scene/SceneCanvas';
 import { useSceneFx } from './scene/useSceneFx';
 import { useSceneIntro } from './scene/useSceneIntro';
 import { ContactModal } from './ui/ContactModal';
-import { DocumentViewer } from './ui/DocumentViewer';
 import { PortraitGate } from './ui/PortraitGate';
 import { ReceiveFx } from './ui/ReceiveFx';
 import { Satchel } from './ui/Satchel';
@@ -16,6 +15,8 @@ import { Splash } from './ui/Splash';
 import { TopBar } from './ui/TopBar';
 import { useGlobalKeys } from './ui/useGlobalKeys';
 import { SignpostHotspot } from './world/SignpostHotspot';
+
+const DocumentViewer = lazy(() => import('./ui/DocumentViewer').then(m => ({ default: m.DocumentViewer })));
 
 export default function App() {
   const [scene, setScene] = useState<SceneHandle | null>(null);
@@ -37,7 +38,9 @@ export default function App() {
       <Satchel />
       <DialoguePanel />
       <ReceiveFx />
-      <DocumentViewer />
+      <Suspense fallback={null}>
+        <DocumentViewer />
+      </Suspense>
       <ContactModal />
       {!viewing && <PortraitGate />}
       <Splash visible={!ready} />
