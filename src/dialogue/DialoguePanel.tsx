@@ -148,7 +148,8 @@ function DialogueView({ node }: { node: DialogueNode }) {
   // Rebind each render so the handler always sees the current choices.
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (useGame.getState().viewing) return;
+      const s = useGame.getState();
+      if (s.viewing || s.contactOpen || s.satchelOpen) return;
       const n = Number(e.key);
       if (settled && Number.isInteger(n) && n >= 1 && n <= view.choices.length) {
         e.preventDefault();

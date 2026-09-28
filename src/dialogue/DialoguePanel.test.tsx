@@ -62,4 +62,13 @@ describe('DialoguePanel', () => {
     await user.keyboard('2');
     expect(useGame.getState().origin).toBe('INT');
   });
+
+  it('ignores number keys while the satchel is open', async () => {
+    const user = userEvent.setup();
+    useGame.getState().talk();
+    useGame.setState({ satchelOpen: true });
+    render(<DialoguePanel />);
+    await user.keyboard('1');
+    expect(useGame.getState().origin).toBeNull();
+  });
 });
