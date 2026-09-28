@@ -53,7 +53,7 @@ export function playIntro(h: SceneHandle, sign: TitleSign, opts: IntroOptions): 
       apply();
       h.layers.back.filters = [];
       h.layers.actors.filters = [];
-      idle.play();
+      if (!prefersReducedMotion()) idle.play();
       resolve();
     });
   });

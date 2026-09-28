@@ -9,7 +9,7 @@ import { pixelTexture } from './pixelTexture';
 import { radialTexture } from './radialTexture';
 
 /** Forge glow, embers, chimney smoke, a drifting cloud and the signpost. Returns a cleanup. */
-export function setupAmbient(h: SceneHandle, particles: ParticleLayer | null): () => void {
+export function setupAmbient(h: SceneHandle, particles: ParticleLayer | null, calm = false): () => void {
   const r = h.app.renderer;
 
   const cloud = new Sprite(pixelTexture(r, CLOUD, CLOUD_PALETTE));
@@ -17,7 +17,7 @@ export function setupAmbient(h: SceneHandle, particles: ParticleLayer | null): (
   cloud.position.set(-200, 70);
   cloud.alpha = 0.9;
   h.layers.back.addChild(cloud);
-  const drift = gsap.to(cloud, { x: WORLD_W + 200, duration: 140, ease: 'none', repeat: -1 });
+  const drift = calm ? null : gsap.to(cloud, { x: WORLD_W + 200, duration: 140, ease: 'none', repeat: -1 });
 
   const forge = new Sprite(radialTexture(128, [255, 130, 40]));
   forge.anchor.set(0.5);
@@ -25,7 +25,7 @@ export function setupAmbient(h: SceneHandle, particles: ParticleLayer | null): (
   forge.blendMode = 'add';
   forge.position.set(FORGE.x, FORGE.y);
   h.layers.back.addChild(forge);
-  const flicker = gsap.to(forge, { alpha: 0.55, duration: 0.18, ease: 'steps(2)', yoyo: true, repeat: -1 });
+  const flicker = calm ? null : gsap.to(forge, { alpha: 0.55, duration: 0.18, ease: 'steps(2)', yoyo: true, repeat: -1 });
 
   const post = new Sprite(pixelTexture(r, SIGNPOST_ROWS, WOOD));
   post.scale.set(5);
@@ -40,8 +40,8 @@ export function setupAmbient(h: SceneHandle, particles: ParticleLayer | null): (
     : [];
 
   return () => {
-    drift.kill();
-    flicker.kill();
+    drift?.kill();
+    flicker?.kill();
     stops.forEach((s) => s());
     [cloud, forge, post].forEach((s) => s.destroy());
   };

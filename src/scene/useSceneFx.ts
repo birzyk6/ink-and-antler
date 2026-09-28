@@ -20,7 +20,7 @@ export function useSceneFx(scene: SceneHandle | null) {
     if (!scene) return;
     const calm = prefersReducedMotion();
     const particles: ParticleLayer | null = calm ? null : createParticleLayer(scene);
-    const stopAmbient = setupAmbient(scene, particles);
+    const stopAmbient = setupAmbient(scene, particles, calm);
     const stops: (() => void)[] = [];
     let celebration: gsap.core.Timeline | null = null;
 
