@@ -22,6 +22,7 @@ export function useSceneFx(scene: SceneHandle | null) {
     const particles: ParticleLayer | null = calm ? null : createParticleLayer(scene);
     const stopAmbient = setupAmbient(scene, particles);
     const stops: (() => void)[] = [];
+    let celebration: gsap.core.Timeline | null = null;
 
     fx.current = {
       ignite(x, y) {
@@ -36,8 +37,9 @@ export function useSceneFx(scene: SceneHandle | null) {
       if (s.celebrate === prev.celebrate || calm) return;
       const at = scene.druidPosition() ?? { x: 960, y: 628 };
       particles?.burst(GOLD_BURST(at.x, at.y - 170));
+      celebration?.kill();
       scene.world.filters = [bloom];
-      gsap
+      celebration = gsap
         .timeline({ onComplete: () => (scene.world.filters = []) })
         .to(bloom, { bloomScale: 1.6, brightness: 1.25, duration: 0.2, ease: 'power2.out' })
         .to(bloom, { bloomScale: 0, brightness: 1, duration: 1.2, ease: 'power2.in' });
@@ -47,6 +49,11 @@ export function useSceneFx(scene: SceneHandle | null) {
       unsubscribe();
       stops.forEach((s) => s());
       stopAmbient();
+      celebration?.kill();
+      if (scene.world.filters?.includes(bloom)) {
+        scene.world.filters = [];
+      }
+      bloom.destroy();
       particles?.destroy();
       fx.current = null;
     };
