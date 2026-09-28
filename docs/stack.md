@@ -34,13 +34,10 @@ Two layers:
 - The druid is a 6-frame strip; frames are swapped by the patrol state machine.
 
 ## Asset pipeline (important for weight)
-Current assets are high-res "pixel-look" images: `bg.png` = **3.4 MB**, druid frames ~200 KB each.
-Plan (`scripts/build-assets.mjs` with sharp):
-1. Detect/choose the native pixel grid (bg looks ~4× → ~480×270; druid ~128 px tall).
-2. Downscale with **nearest-neighbour**, crop sprite frames to a shared bounding box.
-3. Pack druid frames into `druid.png` strip (6 frames) + JSON frame map.
-4. Quantise palette, export PNG + WebP.
-Expected: bg ~100–250 KB, druid sheet ~20–40 KB. Keep originals in `sprites/` as source.
+1. The source art is anti-aliased and not on a clean pixel grid, so it is downscaled with lanczos (nearest-neighbour would add jaggies).
+2. `bg.png` → `src/assets/bg.webp` at 1920×1080, quality 80 (about 300 KB).
+3. Druid frames are cropped to their shared box (97,33 → 323×447), scaled to 162×224 and packed into `src/assets/druid.webp` (6 frames: idle1, idle2, walk1–4).
+4. Generated assets are committed, so Vercel doesn't need sharp. Re-run with `npm run assets`.
 
 ## Budget
 - JS < 260 KB gz, total first load < 1.2 MB, LCP < 2.5 s on 4G.
