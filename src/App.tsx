@@ -20,6 +20,7 @@ const DocumentViewer = lazy(() => import('./ui/DocumentViewer').then(m => ({ def
 
 export default function App() {
   const [scene, setScene] = useState<SceneHandle | null>(null);
+  const [sceneFailed, setSceneFailed] = useState(false);
   const [skipIntro] = useState(() => useGame.getState().introSeen);
   const fx = useSceneFx(scene);
   // fx is a ref; the intro reads it when each torch lights.
@@ -32,7 +33,7 @@ export default function App() {
       <h1 className="sr-only">
         {SIGN_NAME} — {SIGN_SUBTITLE}
       </h1>
-      <SceneCanvas onReady={setScene} druidOverlay={<DruidOverlay />} />
+      <SceneCanvas onReady={setScene} druidOverlay={<DruidOverlay />} onError={() => setSceneFailed(true)} />
       <SignpostHotspot scene={scene} />
       <TopBar />
       <Satchel />
@@ -43,7 +44,7 @@ export default function App() {
       </Suspense>
       <ContactModal />
       {!viewing && <PortraitGate />}
-      <Splash visible={!ready} />
+      <Splash visible={!(ready || sceneFailed)} />
     </>
   );
 }

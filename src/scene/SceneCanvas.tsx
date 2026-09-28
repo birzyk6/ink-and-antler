@@ -7,13 +7,16 @@ import './scene.css';
 interface Props {
   onReady: (handle: SceneHandle) => void;
   druidOverlay: ReactNode;
+  onError?: (err: unknown) => void;
 }
 
-export function SceneCanvas({ onReady, druidOverlay }: Props) {
+export function SceneCanvas({ onReady, druidOverlay, onError }: Props) {
   const hostRef = useRef<HTMLDivElement>(null);
   const druidRef = useRef<HTMLDivElement>(null);
   const onReadyRef = useRef(onReady);
   onReadyRef.current = onReady;
+  const onErrorRef = useRef(onError);
+  onErrorRef.current = onError;
   const [handle, setHandle] = useState<SceneHandle | null>(null);
   const druid = useGame((s) => s.druid);
   const hold = useGame(selectDruidHold);
@@ -21,15 +24,20 @@ export function SceneCanvas({ onReady, druidOverlay }: Props) {
   useEffect(() => {
     let cancelled = false;
     let created: SceneHandle | null = null;
-    createScene(hostRef.current!, { druid: druidRef.current! }, { onDruidArrive: () => useGame.getState().druidArrived() }).then((h) => {
-      if (cancelled) {
-        h.destroy();
-        return;
-      }
-      created = h;
-      setHandle(h);
-      onReadyRef.current(h);
-    });
+    createScene(hostRef.current!, { druid: druidRef.current! }, { onDruidArrive: () => useGame.getState().druidArrived() })
+      .then((h) => {
+        if (cancelled) {
+          h.destroy();
+          return;
+        }
+        created = h;
+        setHandle(h);
+        onReadyRef.current(h);
+      })
+      .catch((err) => {
+        console.error(err);
+        if (!cancelled) onErrorRef.current?.(err);
+      });
     return () => {
       cancelled = true;
       created?.destroy();

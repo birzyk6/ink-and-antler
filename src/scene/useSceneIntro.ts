@@ -16,8 +16,26 @@ export function useSceneIntro(scene: SceneHandle | null, skip: boolean, onIgnite
     let sign: TitleSign | null = null;
     let kill = () => {};
 
+    const advanceDruid = () => {
+      if (cancelled) return;
+      const s = useGame.getState();
+      if (s.druid !== 'offstage') return;
+      if (skip || s.introSeen) s.setDruid('patrolling');
+      else s.startDruidEntrance();
+    };
+
     (async () => {
-      const [built] = await Promise.all([createTitleSign(scene), new Promise((r) => setTimeout(r, SPLASH_MIN_MS))]);
+      let built: TitleSign | null = null;
+      try {
+        [built] = await Promise.all([createTitleSign(scene), new Promise((r) => setTimeout(r, SPLASH_MIN_MS))]);
+      } catch (err) {
+        console.error(err);
+        if (!cancelled) {
+          setReady(true);
+          advanceDruid();
+        }
+        return;
+      }
       if (cancelled) {
         built.destroy();
         return;
@@ -27,11 +45,7 @@ export function useSceneIntro(scene: SceneHandle | null, skip: boolean, onIgnite
       const intro = playIntro(scene, built, { skip, onIgnite });
       kill = intro.kill;
       await intro.done;
-      if (cancelled) return;
-      const s = useGame.getState();
-      if (s.druid !== 'offstage') return;
-      if (skip) s.setDruid('patrolling');
-      else s.startDruidEntrance();
+      advanceDruid();
     })();
 
     return () => {
