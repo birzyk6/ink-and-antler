@@ -3,19 +3,37 @@ import { copy } from '../content/copy';
 import { QuestMarker } from '../ui/QuestMarker';
 import { SpeechBubble } from '../ui/SpeechBubble';
 
-export const LINE_PAUSE_MS = 1400;
 export const NUDGE_MS = 6000;
-export const BARK_MS = 4000;
+
+/** How long a typed line stays up: long enough to read at a relaxed pace. Clicking skips it. */
+export function readMs(text: string): number {
+  return 2500 + text.length * 45;
+}
+
+/** Holds a typed line for readMs, or until skipped. */
+function useLineTimer(onNext: () => void) {
+  const timer = useRef<number | undefined>(undefined);
+  useEffect(() => () => window.clearTimeout(timer.current), []);
+  const start = useCallback(
+    (text: string) => {
+      timer.current = window.setTimeout(onNext, readMs(text));
+    },
+    [onNext],
+  );
+  const skip = useCallback(() => {
+    window.clearTimeout(timer.current);
+    onNext();
+  }, [onNext]);
+  return { start, skip };
+}
 
 export function Greeting({ onDone }: { onDone: () => void }) {
   const [i, setI] = useState(0);
-  const timer = useRef<number | undefined>(undefined);
-  useEffect(() => () => window.clearTimeout(timer.current), []);
   const lines = copy.greeting;
-  const handleTyped = useCallback(() => {
-    timer.current = window.setTimeout(() => (i + 1 < lines.length ? setI(i + 1) : onDone()), LINE_PAUSE_MS);
-  }, [i, lines.length, onDone]);
-  return <SpeechBubble key={i} text={lines[i]} onTyped={handleTyped} />;
+  const next = useCallback(() => (i + 1 < lines.length ? setI(i + 1) : onDone()), [i, lines.length, onDone]);
+  const { start, skip } = useLineTimer(next);
+  const onTyped = useCallback(() => start(lines[i]), [start, lines, i]);
+  return <SpeechBubble key={i} text={lines[i]} onTyped={onTyped} onSkip={skip} />;
 }
 
 export function WaitingCue() {
@@ -28,9 +46,7 @@ export function WaitingCue() {
 }
 
 export function Bark({ text, onDone }: { text: string; onDone: () => void }) {
-  useEffect(() => {
-    const t = window.setTimeout(onDone, BARK_MS);
-    return () => window.clearTimeout(t);
-  }, [onDone]);
-  return <SpeechBubble text={text} />;
+  const { start, skip } = useLineTimer(onDone);
+  const onTyped = useCallback(() => start(text), [start, text]);
+  return <SpeechBubble text={text} onTyped={onTyped} onSkip={skip} />;
 }

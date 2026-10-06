@@ -3,6 +3,7 @@ import { copy } from '../content/copy';
 import { prefersReducedMotion } from '../engine/motion';
 import { remainingItems, useGame } from '../game/store';
 import type { SceneHandle } from '../scene/createScene';
+import { Nameplate } from '../ui/Nameplate';
 import { QuestMarker } from '../ui/QuestMarker';
 import { SpeechBubble } from '../ui/SpeechBubble';
 import { CAT } from './layout';
@@ -25,7 +26,12 @@ export function CatHotspot({ scene }: { scene: SceneHandle | null }) {
 
   useEffect(() => {
     if (!scene || !ref.current) return;
-    return scene.pinAnchor(ref.current, CAT.x - W / 2, CAT.feetY - H);
+    const unpin = scene.pinAnchor(ref.current, CAT.x - W / 2, CAT.feetY - H);
+    const unglow = scene.hoverGlow(ref.current, 'cat');
+    return () => {
+      unpin();
+      unglow();
+    };
   }, [scene]);
 
   useEffect(() => {
@@ -60,6 +66,7 @@ export function CatHotspot({ scene }: { scene: SceneHandle | null }) {
         )}
       </div>
       <button type="button" className="cat-hit" aria-label={copy.cat.label} onClick={pet} />
+      <Nameplate {...copy.nameplates.cat} />
     </div>
   );
 }

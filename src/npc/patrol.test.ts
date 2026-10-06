@@ -45,7 +45,7 @@ describe('helpers', () => {
 
   it('frameFor uses walk frames while moving and idle frames otherwise', () => {
     expect(frameFor({ ...createEnteringNpc(), animMs: 0 })).toBe(2);
-    expect(frameFor({ ...createEnteringNpc(), animMs: 125 })).toBe(3);
+    expect(frameFor({ ...createEnteringNpc(), animMs: 150 })).toBe(3);
     expect(frameFor({ ...createStandingNpc(), animMs: 500 })).toBe(1);
   });
 });

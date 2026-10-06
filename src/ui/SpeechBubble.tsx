@@ -2,8 +2,11 @@ import { useEffect, useRef } from 'react';
 import { useTypewriter } from './useTypewriter';
 import './cues.css';
 
-/** Give each new line a new `key` so the typewriter restarts. */
-export function SpeechBubble({ text, onTyped }: { text: string; onTyped?: () => void }) {
+/**
+ * Give each new line a new `key` so the typewriter restarts. A click finishes the typing;
+ * once typed, a click calls `onSkip` (when given) to move on early.
+ */
+export function SpeechBubble({ text, onTyped, onSkip }: { text: string; onTyped?: () => void; onSkip?: () => void }) {
   const { shown, done, finish } = useTypewriter(text);
   const fired = useRef(false);
 
@@ -15,7 +18,7 @@ export function SpeechBubble({ text, onTyped }: { text: string; onTyped?: () => 
   }, [done, onTyped]);
 
   return (
-    <div className="bubble" role="status" onClick={finish}>
+    <div className={`bubble${done && onSkip ? ' bubble--skippable' : ''}`} role="status" onClick={done ? onSkip : finish}>
       {done ? text : (
         <>
           <span aria-hidden="true">{shown}</span>

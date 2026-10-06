@@ -23,9 +23,9 @@
 /* Fixed size: hovering items never resizes the panel. */
 .satchel-panel {
   position: fixed; right: 108px; top: 50%; z-index: 30; translate: 0 -50%;
-  width: 344px; height: min(500px, calc(100vh - 32px)); padding: 20px; display: flex; flex-direction: column;
+  width: 344px; height: min(540px, calc(100vh - 32px)); padding: 20px; display: flex; flex-direction: column;
 }
-.satchel-panel h2 { margin: 0 0 12px; font-family: var(--font-title); font-weight: normal; font-size: 34px; color: var(--gold); }
+.satchel-panel h2 { margin: 0 0 12px; font-family: var(--font-title); font-weight: 700; font-size: 26px; color: var(--gold); }
 .slots { display: grid; grid-template-columns: repeat(4, 68px); gap: 6px; margin-bottom: 14px; }
 .slot {
   all: unset; box-sizing: border-box; width: 68px; height: 68px; display: grid; place-items: center;
@@ -59,6 +59,7 @@
 .item-type { margin: 2px 0 0; font-size: 15px; color: #a8987a; }
 .item-rule { border: 0; height: 1px; margin: 10px 0; background: linear-gradient(90deg, transparent, #8a7048, transparent); }
 .item-flavour { margin: 0 0 10px; font-style: italic; font-size: 17px; line-height: 1.3; }
+.item-attribution { margin: -6px 0 10px; text-align: right; font-size: 15px; color: #a8987a; }
 .item-weight { margin: 0; font-size: 14px; color: #a8987a; }
 
 .fly { position: fixed; left: 0; top: 0; z-index: 41; pointer-events: none; opacity: 0; }
@@ -66,24 +67,59 @@
 
 .modal-backdrop { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px; background: rgb(10 6 4 / 0.7); }
 .parchment-hand { font-family: var(--font-hand); color: var(--ink); }
-.scroll-doc { width: min(680px, calc(100vw - 32px)); }
+.scroll-doc { position: relative; width: min(680px, calc(100vw - 32px)); }
+/* Turned wooden rod with brass finials; the faint grain lines slide while it unrolls. */
 .scroll-rod {
-  position: relative; height: 24px; margin: 0 -16px; background: var(--wood);
-  border: 4px solid var(--outline); box-shadow: inset 0 4px 0 var(--wood-light), inset 0 -4px 0 var(--wood-dark);
+  position: relative; z-index: 1; height: 26px; margin: 0 -14px; border: 3px solid var(--outline); border-radius: 13px;
+  background:
+    repeating-linear-gradient(0deg, transparent 0 7px, rgb(0 0 0 / 0.14) 7px 9px),
+    linear-gradient(#c48d54, #8a5630 40%, #5a341c 75%, #2e1a0e);
+  box-shadow: 0 5px 8px rgb(0 0 0 / 0.45);
 }
+.scroll-rod::before, .scroll-rod::after {
+  content: ''; position: absolute; top: 50%; width: 22px; height: 34px; translate: 0 -50%;
+  border: 3px solid var(--outline); border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #fff1b8, var(--gold) 40%, var(--gold-dark) 75%, #5c3a0c);
+}
+.scroll-rod::before { left: -16px; }
+.scroll-rod::after { right: -16px; }
+.scroll-sheet { position: relative; margin: -8px 0; }
 .scroll-body {
-  max-height: calc(100vh - 140px); overflow-y: auto; padding: 24px 32px; background: var(--parchment);
-  border-left: 4px solid var(--outline); border-right: 4px solid var(--outline);
-  box-shadow: inset 8px 0 0 var(--parchment-dark), inset -8px 0 0 var(--parchment-dark); font-size: 20px;
+  max-height: calc(100vh - 96px); overflow-y: auto; padding: 22px 48px; font-size: 20px; line-height: 1.35;
 }
-.scroll-body h2 { margin: 0; font-size: 40px; text-align: center; }
-.doc-sub { margin: 4px 0 16px; text-align: center; font-style: italic; }
-.scroll-body h3 { margin: 16px 0 4px; font-size: 24px; color: var(--red); border-bottom: 2px solid var(--parchment-dark); }
+/* Aged parchment: fibres and blotches from SVG noise, scorched edges, and shading where it curls into the rods. */
+.parchment {
+  background-color: #ecd6a4;
+  background-image:
+    linear-gradient(rgb(70 40 12 / 0.4), transparent 22px, transparent calc(100% - 22px), rgb(70 40 12 / 0.4)),
+    linear-gradient(90deg, rgb(110 62 20 / 0.32), transparent 7%, transparent 93%, rgb(110 62 20 / 0.32)),
+    radial-gradient(ellipse at 50% 45%, transparent 55%, rgb(120 70 22 / 0.28)),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='b'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012' numOctaves='3' seed='4' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.45 0 0 0 0 0.27 0 0 0 0 0.08 0 0 0 0.5 -0.12'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23b)'/%3E%3C/svg%3E"),
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9 0.35' numOctaves='2' seed='9' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.35 0 0 0 0 0.22 0 0 0 0 0.08 0 0 0 0.32 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  border-left: 3px solid #6b4520; border-right: 3px solid #6b4520;
+  box-shadow: inset 0 0 0 1px rgb(255 240 200 / 0.25);
+}
+/* Ribbon and seal holding the closed scroll; only there until the first opening breaks them. */
+.scroll-tie { position: absolute; left: 50%; top: -6px; z-index: 2; width: 84px; height: 84px; translate: -50% 0; display: grid; place-items: center; }
+.scroll-ribbon { position: absolute; top: 4px; width: 22px; height: 110px; border: 2px solid var(--outline); background: linear-gradient(90deg, var(--ribbon-dark), var(--ribbon) 45%, var(--ribbon-dark)); }
+.scroll-ribbon::after { content: ''; position: absolute; left: -2px; bottom: -14px; width: 22px; height: 14px; border: 2px solid var(--outline); border-top: 0; background: var(--ribbon-dark); clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 45%, 0 100%); }
+.wax-seal { position: relative; filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.5)); }
+.wax-shard { position: absolute; width: 8px; height: 6px; border: 1px solid var(--outline); background: var(--wax); opacity: 0; clip-path: polygon(0 30%, 60% 0, 100% 70%, 30% 100%); }
+.scroll-tie--cv { --ribbon: #c8443a; --ribbon-dark: #6e1a12; --wax: #c9952a; }
+.scroll-tie--letter { --ribbon: #4a7fc4; --ribbon-dark: #1d3a63; --wax: #a02a20; }
+.scroll-body h2 { margin: 0; font-family: var(--font-title); font-size: 1.7em; text-align: center; }
+.doc-sub { margin: 4px 0 0.8em; text-align: center; font-style: italic; }
+.scroll-body h3 { margin: 0.9em 0 0.3em; font-family: var(--font-title); font-size: 1em; color: var(--red); border-bottom: 2px solid rgb(120 70 22 / 0.35); }
 .scroll-body ul { margin: 0; padding-left: 20px; }
-.doc-actions { display: flex; gap: 12px; justify-content: center; margin-top: 20px; font-family: var(--font-ui); }
-.doc-sublist { margin: 2px 0 8px; padding-left: 18px; font-size: 17px; list-style: '– '; }
-.doc-closing { margin: 18px 0 0; font-style: italic; text-align: center; }
+.doc-actions { display: flex; gap: 12px; justify-content: center; margin-top: 1em; font-family: var(--font-ui); font-size: 18px; }
+.doc-sublist { margin: 2px 0 0.4em; padding-left: 18px; font-size: 0.85em; list-style: '– '; }
+.doc-closing { margin: 0.9em 0 0; font-style: italic; text-align: center; }
 .letter-opening { margin: 0 0 8px; }
-.poem { margin: 16px 0; padding-left: 16px; border-left: 3px solid var(--parchment-dark); font-style: italic; }
-.poem p { margin: 0 0 12px; }
-.letter-sealed { display: grid; place-items: center; }
+.poem { margin: 0.8em 0; padding-left: 16px; border-left: 3px solid var(--parchment-dark); font-style: italic; }
+.poem p { margin: 0 0 0.6em; }
+/* Wide screens: a broader scroll, so the text needs less shrinking to fit. */
+@media (min-width: 900px) {
+  .scroll-doc { width: min(900px, calc(100vw - 72px)); }
+  .doc-list--short { columns: 2; column-gap: 40px; }
+  .doc-list--short li { break-inside: avoid; }
+}

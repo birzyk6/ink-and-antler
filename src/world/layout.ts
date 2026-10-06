@@ -17,6 +17,8 @@ export const ENTER_START_X = -120;
 export const SIGN = { x: 960, top: 96 };
 /** The cat painted on the lower street (fast travel): horizontal centre and feet. */
 export const CAT = { x: 342, feetY: 972 };
+/** Top-left of the cat cut out of the bg (cat.webp); keep in sync with CAT_BOX in scripts/build-assets.mjs. */
+export const CAT_CUT = { x: 296, y: 915 };
 export const FORGE = { x: 140, y: 520 };
 export const CHIMNEYS = [
   { x: 152, y: 292 },

@@ -1,11 +1,12 @@
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useEffect, useRef, useState } from 'react';
-import { copy } from '../content/copy';
+import { copy, items } from '../content/copy';
 import { prefersReducedMotion } from '../engine/motion';
 import { ABILITIES, CHECKS, CHECK_ORDER, ORIGIN_BONUS, modifierFor } from '../game/checks';
 import type { RoundResult } from '../game/round';
 import { remainingItems, useGame, type DialogueNode, type GameState } from '../game/store';
+import { ScrollIcon } from '../ui/ScrollIcon';
 import { useTypewriter } from '../ui/useTypewriter';
 import { D20 } from './D20';
 import { DiceTray, RoundSummary } from './DiceTray';
@@ -138,35 +139,71 @@ function DialogueView({ node }: { node: DialogueNode }) {
     return () => window.removeEventListener('keydown', onKey);
   });
 
+  const rewind = g.history.length > 0 && (
+    <button type="button" className="px-btn px-btn--small" onClick={g.rewind}>
+      <span aria-hidden="true">⟲ </span>
+      {copy.rewind}
+    </button>
+  );
+  const choices = settled && view.choices.length > 0 && (
+    <ol className="choices">
+      {view.choices.map((c, i) => (
+        <li key={i}>
+          <button type="button" className="choice" onClick={c.onSelect}>
+            <span className="choice-num">{i + 1}</span>
+            {c.tag && (
+              <span className="choice-tag" data-ability={c.tag.slice(0, 3)}>
+                [{c.tag}]
+              </span>
+            )}{' '}
+            {c.label}
+          </button>
+        </li>
+      ))}
+    </ol>
+  );
+
+  // The dice game gets its own table instead of the dialogue box.
+  if (view.dice || view.result) {
+    const wager = 'wager' in node ? node.wager : null;
+    return (
+      <div className="table-backdrop">
+        <section ref={panelRef} className="dice-table" aria-label={`Dialogue with ${copy.speaker}`}>
+          <header className="table-head">
+            <Portrait size={76} />
+            <div className="table-speech">
+              <div className="dialogue-head">
+                <h2 className="dialogue-speaker">{copy.speaker}</h2>
+                {rewind}
+              </div>
+              {settled && text && <TypedLines text={text} />}
+            </div>
+            {wager && (
+              <div className="table-stake">
+                <ScrollIcon id={wager} size={48} />
+                <span className="table-stake-label">{copy.dice.stake}</span>
+                <span className="table-stake-name">{items[wager].name}</span>
+              </div>
+            )}
+          </header>
+          <div className="table-felt">{view.result ? <RoundSummary result={view.result} /> : <DiceTray />}</div>
+          {choices}
+        </section>
+      </div>
+    );
+  }
+
   return (
-    <section ref={panelRef} className="dialogue px-panel" aria-label={`Dialogue with ${copy.speaker}`}>
+    <section ref={panelRef} className="dialogue" aria-label={`Dialogue with ${copy.speaker}`}>
       <Portrait />
       <div className="dialogue-main">
         <div className="dialogue-head">
           <h2 className="dialogue-speaker">{copy.speaker}</h2>
-          {g.history.length > 0 && (
-            <button type="button" className="px-btn px-btn--small" onClick={g.rewind}>
-              <span aria-hidden="true">⟲ </span>
-              {copy.rewind}
-            </button>
-          )}
+          {rewind}
         </div>
         {view.d20 && <D20 {...view.d20} onSettled={() => setSettled(true)} />}
         {settled && text && <TypedLines text={text} />}
-        {view.result && <RoundSummary result={view.result} />}
-        {view.dice && <DiceTray />}
-        {settled && view.choices.length > 0 && (
-          <ol className="choices">
-            {view.choices.map((c, i) => (
-              <li key={i}>
-                <button type="button" className="choice" onClick={c.onSelect}>
-                  <span className="choice-num">{i + 1}.</span>
-                  {c.tag && <span className="choice-tag">[{c.tag}]</span>} {c.label}
-                </button>
-              </li>
-            ))}
-          </ol>
-        )}
+        {choices}
       </div>
     </section>
   );

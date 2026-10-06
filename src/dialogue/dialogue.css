@@ -1,50 +1,301 @@
+/* Dialogue box: dark lacquer with a gold filigree frame, in the spirit of BG3's dialogue. */
 .dialogue {
   position: fixed;
   left: 50%;
-  bottom: 16px;
+  bottom: 18px;
   z-index: 20;
   transform: translateX(-50%);
-  width: min(920px, calc(100vw - 32px));
-  max-height: calc(100vh - 32px);
+  width: min(1100px, calc(100vw - 32px));
+  max-height: calc(100vh - 36px);
   overflow-y: auto;
   display: flex;
-  gap: 16px;
-  padding: 20px;
+  gap: 24px;
+  padding: 26px 32px 22px;
+  color: #f1e4c4;
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgb(120 82 40 / 0.22), transparent 60%),
+    linear-gradient(rgb(33 23 15 / 0.96), rgb(18 12 8 / 0.97));
+  border: 2px solid #b8893c;
+  border-radius: 6px;
+  box-shadow:
+    0 0 0 4px #1b1210,
+    0 0 0 6px #6b4e24,
+    0 14px 34px rgb(0 0 0 / 0.6),
+    inset 0 0 0 1px rgb(255 220 150 / 0.14),
+    inset 0 0 48px rgb(0 0 0 / 0.55);
+}
+/* Gold flourish on the top edge. */
+.dialogue::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -1px;
+  width: 220px;
+  height: 24px;
+  translate: -50% 0;
+  pointer-events: none;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 24'%3E%3Cpath d='M4 12 H84 M136 12 H216' stroke='%23b8893c' stroke-width='2'/%3E%3Cpath d='M84 12 C94 2 102 2 110 12 C118 2 126 2 136 12 C126 22 118 22 110 12 C102 22 94 22 84 12 Z' fill='%231b1210' stroke='%23e8b04a' stroke-width='2'/%3E%3Cpath d='M110 5 L116 12 L110 19 L104 12 Z' fill='%23e8b04a'/%3E%3Ccircle cx='4' cy='12' r='3' fill='%23e8b04a'/%3E%3Ccircle cx='216' cy='12' r='3' fill='%23e8b04a'/%3E%3C/svg%3E") center / contain no-repeat;
 }
 .portrait {
   flex: none;
-  width: 96px;
-  height: 96px;
-  border: 4px solid var(--outline);
+  border: 3px solid #1b1210;
+  border-radius: 4px;
   background-color: #2e3b2a;
   background-repeat: no-repeat;
   image-rendering: pixelated;
-  box-shadow: inset 0 0 0 4px var(--gold-dark);
+  box-shadow: 0 0 0 2px #b8893c, 0 0 0 5px #1b1210, 0 6px 14px rgb(0 0 0 / 0.5), inset 0 0 14px rgb(0 0 0 / 0.5);
 }
+.dialogue > .portrait { margin-top: 4px; }
 .dialogue-main { flex: 1; min-width: 0; }
-.dialogue-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 6px; }
-.dialogue-speaker { margin: 0; font-family: var(--font-title); font-weight: normal; font-size: 34px; line-height: 1; color: var(--gold); }
-.dialogue-text { margin: 0 0 12px; white-space: pre-line; line-height: 1.35; font-size: 20px; cursor: pointer; }
-.choices { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
-.choice { all: unset; display: block; width: 100%; box-sizing: border-box; padding: 4px 8px; cursor: pointer; line-height: 1.3; }
-.choice:hover, .choice:focus-visible { background: rgb(0 0 0 / 0.25); color: #fff6dc; }
-.choice-num, .choice-tag { color: var(--gold); margin-right: 8px; }
+.dialogue-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin: 0 0 10px; padding-bottom: 8px; border-bottom: 1px solid; border-image: linear-gradient(90deg, #b8893c, rgb(184 137 60 / 0.25) 60%, transparent) 1; }
+.dialogue-speaker {
+  margin: 0;
+  font-family: var(--font-title);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1;
+  letter-spacing: 0.03em;
+  color: var(--gold);
+  text-shadow: 0 2px 0 #1b1210, 0 0 16px rgb(232 176 74 / 0.25);
+}
+.dialogue-text { margin: 0 0 14px; white-space: pre-line; line-height: 1.45; font-size: 22px; cursor: pointer; }
+.choices { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
+.choice {
+  all: unset;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 12px 7px 14px;
+  border-left: 3px solid transparent;
+  cursor: pointer;
+  font-size: 20px;
+  line-height: 1.35;
+  color: #e3d3ad;
+  transition: background 150ms ease, border-color 150ms ease, color 150ms ease;
+}
+.choice:hover, .choice:focus-visible {
+  color: #fff6dc;
+  border-left-color: var(--gold);
+  background: linear-gradient(90deg, rgb(232 176 74 / 0.2), rgb(232 176 74 / 0.04) 70%, transparent);
+}
+.choice-num {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 12px;
+  font-size: 14px;
+  position: relative;
+  isolation: isolate;
+  color: #1b1210;
+  vertical-align: 1px;
+}
+/* Gold diamond behind the number. */
+.choice-num::before {
+  content: '';
+  position: absolute;
+  inset: 3px;
+  z-index: -1;
+  rotate: 45deg;
+  background: linear-gradient(#f3cf7a, #b8893c);
+  border: 1px solid #1b1210;
+}
+.choice-tag { margin-right: 6px; color: var(--gold); }
+.choice-tag[data-ability='CHA'] { color: #d99cf2; }
+.choice-tag[data-ability='INT'] { color: #8ab8ff; }
+.choice-tag[data-ability='DEX'] { color: #97de86; }
+.choice-tag[data-ability='WIS'] { color: #f2d47a; }
 
-.d20 { display: grid; justify-items: center; gap: 8px; margin: 4px 0 12px; }
-.d20-die {
-  width: 88px;
-  height: 88px;
+/* The dice game: a wooden gaming table with a felt top. */
+.table-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
   display: grid;
   place-items: center;
-  background: var(--red);
-  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
+  padding: 16px;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 55%, rgb(8 5 3 / 0.25), rgb(8 5 3 / 0.7));
 }
-.d20-face { font-size: 34px; color: #fff6dc; text-shadow: 3px 3px 0 var(--outline); }
-.d20.nat20 .d20-die { background: var(--gold); }
-.d20.nat20 .d20-face { color: var(--outline); text-shadow: none; }
-.d20-banner { font-family: var(--font-title); font-size: 40px; color: var(--gold); text-shadow: 3px 3px 0 var(--outline); }
-.d20-banner--bad { color: #d8604f; }
+.dice-table {
+  pointer-events: auto;
+  width: min(880px, 100%);
+  max-height: calc(100vh - 32px);
+  overflow-y: auto;
+  padding: 22px 24px 20px;
+  color: #f1e4c4;
+  border: 4px solid #1b1210;
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 16px 16px, #f3cf7a 0 4px, #6b4e24 5px, transparent 6px),
+    radial-gradient(circle at calc(100% - 16px) 16px, #f3cf7a 0 4px, #6b4e24 5px, transparent 6px),
+    radial-gradient(circle at 16px calc(100% - 16px), #f3cf7a 0 4px, #6b4e24 5px, transparent 6px),
+    radial-gradient(circle at calc(100% - 16px) calc(100% - 16px), #f3cf7a 0 4px, #6b4e24 5px, transparent 6px),
+    repeating-linear-gradient(92deg, rgb(0 0 0 / 0.08) 0 2px, transparent 2px 9px, rgb(255 255 255 / 0.04) 9px 10px, transparent 10px 17px),
+    linear-gradient(#7a4a2a, #5a341c 55%, #3e2312);
+  box-shadow: 0 18px 40px rgb(0 0 0 / 0.65), inset 0 2px 0 rgb(255 220 160 / 0.25), inset 0 -3px 0 rgb(0 0 0 / 0.35);
+}
+.table-head { display: flex; align-items: flex-start; gap: 16px; margin-bottom: 16px; }
+.table-speech { flex: 1; min-width: 0; }
+.table-speech .dialogue-head { margin-bottom: 8px; padding-bottom: 6px; }
+.table-speech .dialogue-speaker { font-size: 24px; }
+.table-speech .dialogue-text {
+  margin: 0;
+  padding: 10px 14px;
+  font-size: 19px;
+  line-height: 1.4;
+  color: var(--ink);
+  background: linear-gradient(#f4e2b6, #e3c88e);
+  border: 2px solid #1b1210;
+  border-radius: 3px;
+  box-shadow: inset 0 0 18px rgb(120 70 22 / 0.3), 0 3px 0 rgb(0 0 0 / 0.3);
+}
+.table-stake {
+  flex: none;
+  width: 140px;
+  display: grid;
+  justify-items: center;
+  gap: 2px;
+  padding: 8px 6px;
+  text-align: center;
+  background: rgb(0 0 0 / 0.28);
+  border: 1px solid rgb(232 176 74 / 0.45);
+  border-radius: 6px;
+}
+.table-stake-label { font-family: var(--font-title); font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); }
+.table-stake-name { font-size: 15px; line-height: 1.2; }
+.table-felt {
+  padding: 20px 22px;
+  border: 3px solid #1b1210;
+  border-radius: 12px;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0.1 0 0 0 0 0.05 0 0 0 0.35 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E"),
+    radial-gradient(ellipse at 50% 45%, #3f7048, #284c31 60%, #16301e);
+  box-shadow: inset 0 0 0 2px #b8893c, inset 0 0 0 5px rgb(27 18 16 / 0.6), inset 0 0 40px rgb(0 0 0 / 0.55);
+}
+.dice-table .tray { margin: 0; padding: 0; gap: 0; background: none; border: 0; box-shadow: none; }
+.dice-table .tray-row { display: grid; grid-template-columns: 96px repeat(5, auto) 1fr; justify-content: start; align-items: center; gap: 16px; padding: 16px 4px; }
+.dice-table .tray-row + .tray-row { border-top: 2px dashed rgb(232 176 74 / 0.28); }
+.dice-table .die { zoom: 1.2; }
+.dice-table .tray-who { width: auto; font-family: var(--font-title); font-weight: 700; font-size: 18px; letter-spacing: 0.05em; color: var(--gold); text-shadow: 0 2px 0 #1b1210; }
+.dice-table .tray-hand {
+  justify-self: end;
+  margin: 0;
+  padding: 4px 12px;
+  font-size: 17px;
+  opacity: 1;
+  color: var(--ink);
+  background: linear-gradient(#f4e2b6, #dcc08a);
+  border: 2px solid #1b1210;
+  border-radius: 3px;
+}
+.dice-table .tray-actions { justify-content: center; gap: 14px; padding-top: 14px; border-top: 2px dashed rgb(232 176 74 / 0.28); }
+.dice-table .tray-rerolls { font-size: 16px; color: #e3d3ad; }
+.dice-table .choices { display: flex; justify-content: center; gap: 12px; margin-top: 16px; }
+.dice-table .choice {
+  width: auto;
+  padding: 8px 18px;
+  font-size: 19px;
+  color: #fff6dc;
+  background: linear-gradient(#c2903f, #8a5d1c);
+  border: 3px solid #1b1210;
+  border-radius: 4px;
+  box-shadow: inset 0 2px 0 rgb(255 240 200 / 0.4), 0 4px 0 rgb(0 0 0 / 0.35);
+}
+.dice-table .choice:hover, .dice-table .choice:focus-visible { background: linear-gradient(#dcaa52, #a06e24); border-left-color: #1b1210; }
+.dice-table .choice-num { display: none; }
+@media (max-width: 700px) {
+  .table-head { flex-wrap: wrap; }
+  .table-stake { width: 100%; grid-auto-flow: column; justify-content: start; align-items: center; gap: 10px; }
+  .dice-table .tray-row { grid-template-columns: repeat(5, auto); gap: 10px; }
+  .dice-table .tray-who, .dice-table .tray-hand { grid-column: 1 / -1; justify-self: start; }
+  .dice-table .die { zoom: 1; }
+}
+
+.d20 {
+  --d20-hi: #e2644e;
+  --d20-mid: #c4453a;
+  --d20-front: #b4372e;
+  --d20-lo: #8e2a23;
+  --d20-deep: #651b16;
+  --d20-ink: #fff3d6;
+  --d20-ink-edge: var(--outline);
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  margin: 4px 0 12px;
+}
+.d20.nat20 {
+  --d20-hi: #fff2c2;
+  --d20-mid: #f4cd6e;
+  --d20-front: #e8b04a;
+  --d20-lo: #c38a2c;
+  --d20-deep: #8c5d17;
+  --d20-ink: #3a220c;
+  --d20-ink-edge: #fff2c2;
+}
+.d20.nat1 {
+  --d20-hi: #8c716a;
+  --d20-mid: #715752;
+  --d20-front: #654b46;
+  --d20-lo: #4e3a37;
+  --d20-deep: #372926;
+  --d20-ink: #d8c6b4;
+}
+.d20-stage { position: relative; width: 96px; height: 100px; display: grid; place-items: center; }
+.d20-die { position: relative; width: 96px; height: 96px; will-change: transform; }
+.d20.nat20 .d20-die { filter: drop-shadow(0 0 6px rgb(232 176 74 / 0.9)); animation: d20-glow 1.6s ease-in-out infinite alternate; }
+.d20.nat1 .d20-die { filter: saturate(0.6) brightness(0.9); }
+.d20-svg { width: 100%; height: 100%; overflow: visible; image-rendering: auto; }
+.d20-facet { fill: var(--d20-front); stroke: rgb(255 222 190 / 0.32); stroke-width: 0.8; stroke-linejoin: round; transition: fill 400ms ease; }
+.d20-facet--hi { fill: var(--d20-hi); }
+.d20-facet--mid { fill: var(--d20-mid); }
+.d20-facet--lo { fill: var(--d20-lo); }
+.d20-facet--deep { fill: var(--d20-deep); }
+.d20-sheen { pointer-events: none; }
+.d20-rim { fill: none; stroke: var(--outline); stroke-width: 4; stroke-linejoin: round; }
+.d20-crack { fill: none; stroke: var(--outline); stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 0; }
+.d20-face {
+  font-family: var(--font-title);
+  font-size: 26px;
+  font-weight: bold;
+  fill: var(--d20-ink);
+  stroke: var(--d20-ink-edge);
+  stroke-width: 3px;
+  stroke-linejoin: round;
+  paint-order: stroke;
+}
+.d20-shadow {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: -4px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.5), transparent);
+}
+.d20-burst {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(255 236 170 / 0.95), rgb(232 176 74 / 0.6) 45%, transparent);
+  pointer-events: none;
+}
+.d20-spark {
+  position: absolute;
+  left: calc(50% - 7px);
+  top: calc(50% - 7px);
+  width: 14px;
+  height: 14px;
+  background: #ffe9a8;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+  filter: drop-shadow(0 0 3px var(--gold));
+  pointer-events: none;
+}
+.d20-banner { font-family: var(--font-title); font-size: 40px; color: var(--gold); text-shadow: 3px 3px 0 var(--outline), 0 0 18px rgb(232 176 74 / 0.55); }
+.d20-banner--bad { color: #d8604f; text-shadow: 3px 3px 0 var(--outline); }
 .d20-math { margin: 0; font-size: 16px; }
+@keyframes d20-glow { to { filter: drop-shadow(0 0 14px rgb(255 214 120 / 1)); } }
 .ok { color: #9fd66a; }
 .bad { color: #f08a78; }
 
@@ -52,26 +303,119 @@
 .tray-row { display: flex; align-items: center; gap: 10px; }
 .tray-who { width: 72px; color: var(--gold); }
 .tray-hand { margin-left: 8px; font-size: 16px; opacity: 0.85; }
+.tray-hand--new { animation: hand-in 320ms ease-out both; }
 .tray-actions { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
 .tray-rerolls { font-size: 14px; opacity: 0.8; }
+@keyframes hand-in { from { opacity: 0; transform: translateY(4px); } }
+
+/* A six-sided die: the button/div holds the ground shadow; .die-body carries the face and is what GSAP throws around. */
 .die {
   all: unset;
+  position: relative;
+  flex: none;
   box-sizing: border-box;
   width: 52px;
   height: 52px;
-  padding: 6px;
-  display: grid;
-  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
-  gap: 2px;
-  background: var(--parchment);
-  border: 4px solid var(--outline);
-  box-shadow: inset -4px -4px 0 var(--parchment-dark);
-  animation: die-roll 300ms steps(3);
+  border-radius: 11px;
+  perspective: 260px;
+  transition: translate 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 button.die { cursor: pointer; }
-button.die:focus-visible { outline: 4px solid var(--gold); }
-.die--held { background: #ffe39a; outline: 4px solid var(--gold); translate: 0 -4px; }
-.die--hidden { grid-template: 1fr / 1fr; place-items: center; background: var(--wood-dark); color: var(--parchment); font-size: 24px; }
-.pip { width: 8px; height: 8px; place-self: center; background: var(--outline); }
-.pip--off { background: transparent; }
-@keyframes die-roll { 0% { transform: rotate(-20deg) scale(0.8); } 50% { transform: rotate(15deg); } }
+button.die:hover { translate: 0 -2px; }
+button.die:focus-visible { outline: 3px solid var(--gold); outline-offset: 4px; }
+.die--held, button.die--held:hover { translate: 0 -8px; }
+.die-shadow {
+  position: absolute;
+  left: 3px;
+  right: 3px;
+  bottom: -9px;
+  height: 10px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.55), transparent);
+  transition: scale 200ms ease, opacity 200ms ease, translate 200ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+button.die:hover .die-shadow { translate: 0 2px; }
+.die--held .die-shadow, button.die--held:hover .die-shadow { translate: 0 8px; scale: 0.78; opacity: 0.5; }
+.die-body { position: absolute; inset: 0; transform-style: preserve-3d; }
+.die-face {
+  position: absolute;
+  inset: 0;
+  border: 2px solid var(--outline);
+  border-radius: 11px;
+  backface-visibility: hidden;
+  transition: background 200ms ease, box-shadow 200ms ease;
+}
+.die-face--back { transform: rotateY(180deg); }
+
+/* Carved bone: lit from the top left, faint grain, a bevelled edge and a visible thickness below. */
+.die-face--bone {
+  display: grid;
+  grid-template: repeat(3, 1fr) / repeat(3, 1fr);
+  padding: 6px;
+  background:
+    radial-gradient(90% 70% at 28% 18%, rgb(255 255 255 / 0.6), transparent 60%),
+    repeating-linear-gradient(100deg, rgb(140 100 50 / 0.07) 0 1px, transparent 1px 4px),
+    linear-gradient(150deg, #fdf4dc 0%, #efdcae 55%, #d4b47c 100%);
+  box-shadow:
+    inset 2px 2px 0 rgb(255 255 255 / 0.75),
+    inset -3px -3px 0 rgb(150 105 50 / 0.3),
+    inset -5px -5px 7px rgb(110 72 28 / 0.25),
+    0 3px 0 0 #a8834c,
+    0 3px 0 2px var(--outline),
+    0 0 0 0 transparent,
+    0 0 0 0 transparent;
+}
+.die--held .die-face--bone {
+  background:
+    radial-gradient(90% 70% at 28% 18%, rgb(255 255 255 / 0.65), transparent 60%),
+    repeating-linear-gradient(100deg, rgb(140 100 50 / 0.07) 0 1px, transparent 1px 4px),
+    linear-gradient(150deg, #fff6d8 0%, #f7df9c 55%, #e0b360 100%);
+  box-shadow:
+    inset 2px 2px 0 rgb(255 255 255 / 0.8),
+    inset -3px -3px 0 rgb(168 116 30 / 0.35),
+    inset -5px -5px 7px rgb(110 72 28 / 0.2),
+    0 3px 0 0 #b8892e,
+    0 3px 0 2px var(--outline),
+    0 0 0 4px var(--gold),
+    0 4px 16px 5px rgb(232 176 74 / 0.6);
+}
+.pip {
+  width: 9px;
+  height: 9px;
+  place-self: center;
+  border-radius: 50%;
+  background: radial-gradient(circle at 62% 66%, #5a3622 0%, #1b1210 70%);
+  box-shadow: inset 1px 2px 2px rgb(0 0 0 / 0.85), 0 1px 0 rgb(255 255 255 / 0.7), 0 -1px 0 rgb(110 72 28 / 0.35);
+}
+.pip--off { visibility: hidden; }
+.die-face--bone[data-value='1'] .pip { width: 13px; height: 13px; background: radial-gradient(circle at 62% 66%, #c9473a 0%, #6a1912 75%); }
+
+/* Haslin's hidden dice: dark stained wood, an antler rune carved in and gilded. */
+.die-face--rune {
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(90% 70% at 28% 18%, rgb(255 214 160 / 0.2), transparent 60%),
+    repeating-linear-gradient(94deg, rgb(0 0 0 / 0.2) 0 1px, transparent 1px 3px, rgb(255 200 140 / 0.05) 3px 4px, transparent 4px 7px),
+    linear-gradient(150deg, #64402a 0%, #3e2416 55%, #23130b 100%);
+  box-shadow:
+    inset 2px 2px 0 rgb(255 210 150 / 0.2),
+    inset -3px -3px 5px rgb(0 0 0 / 0.5),
+    0 3px 0 0 #1c100a,
+    0 3px 0 2px var(--outline);
+}
+.die-rune { width: 28px; height: 28px; overflow: visible; image-rendering: auto; }
+.die-rune path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.die-rune-groove { stroke: rgb(0 0 0 / 0.6); stroke-width: 3.4; translate: 0 0.8px; }
+.die-rune-gild { stroke: #d8a24c; stroke-width: 1.8; filter: drop-shadow(0 0 2px rgb(232 176 74 / 0.45)); }
+
+/* Scoring dice at the reveal: a gold ring that GSAP pulses in (or that is simply on, with reduced motion). */
+.die-glow {
+  position: absolute;
+  inset: -4px;
+  border-radius: 14px;
+  box-shadow: 0 0 0 3px var(--gold), 0 0 14px 3px rgb(232 176 74 / 0.7);
+  opacity: 0;
+  pointer-events: none;
+}
+.die--scoring .die-glow { opacity: 0.6; }

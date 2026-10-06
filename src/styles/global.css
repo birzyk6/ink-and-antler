@@ -10,9 +10,10 @@
   --ink: #2b1a10;
   --red: #a8322a;
   --letterbox: #140d0a;
-  --font-ui: 'Pixelify Sans', system-ui, sans-serif;
-  --font-title: 'Jacquard 24', 'Pixelify Sans', serif;
-  --font-hand: 'IM Fell English', Georgia, serif;
+  /* Readable book serifs: Alegreya for text, Cinzel's carved capitals for names and titles. */
+  --font-ui: 'Alegreya', Georgia, serif;
+  --font-title: 'Cinzel', Georgia, serif;
+  --font-hand: 'Alegreya', Georgia, serif;
 }
 
 *, *::before, *::after { box-sizing: border-box; }
@@ -23,7 +24,7 @@ body {
   font-family: var(--font-ui);
   font-size: 18px;
   overflow: hidden;
-  -webkit-font-smoothing: none;
+  -webkit-font-smoothing: antialiased;
 }
 img, svg { display: block; image-rendering: pixelated; }
 button { font: inherit; color: inherit; }

@@ -1,6 +1,19 @@
 .splash { position: fixed; inset: 0; z-index: 100; display: grid; place-content: center; justify-items: center; gap: 16px; background: var(--letterbox); font-size: 20px; }
-.splash-d20 {
-  width: 72px; height: 72px; display: grid; place-items: center; background: var(--red); color: #fff6dc; font-size: 28px;
-  clip-path: polygon(50% 0, 100% 25%, 100% 75%, 50% 100%, 0 75%, 0 25%);
-  animation: spin 0.6s steps(6) infinite;
+.splash p { margin: 0; font-family: var(--font-title); letter-spacing: 0.04em; color: var(--gold); }
+.splash-d20 { position: relative; width: 104px; height: 128px; margin: 0; display: block; }
+.splash-die { position: absolute; left: 4px; bottom: 14px; width: 96px; height: 96px; animation: splash-tumble 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite; }
+.splash-shadow {
+  position: absolute; left: 50%; bottom: 4px; width: 72px; height: 12px; translate: -50% 0; border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(0 0 0 / 0.7), transparent);
+  animation: splash-shadow 1.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
 }
+/* Hop, spin a full turn in the air, land with a squash. */
+@keyframes splash-tumble {
+  0% { transform: translateY(0) rotate(0) scale(1.08, 0.92); }
+  12% { transform: translateY(0) rotate(0) scale(1); }
+  50% { transform: translateY(-28px) rotate(200deg); }
+  86% { transform: translateY(0) rotate(360deg) scale(1); }
+  93% { transform: translateY(0) rotate(360deg) scale(1.08, 0.92); }
+  100% { transform: translateY(0) rotate(360deg) scale(1); }
+}
+@keyframes splash-shadow { 50% { scale: 0.6; opacity: 0.5; } }

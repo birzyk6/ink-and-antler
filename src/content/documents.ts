@@ -18,19 +18,6 @@ export const CV: { title: string; subtitle: string[]; sections: DocSection[]; cl
   subtitle: ['Poland, Kraków', '+48 694 482 078', 'kulijewiczmichal@gmail.com'],
   sections: [
     {
-      heading: 'Skills',
-      entries: plain([
-        'Writing',
-        'Songwriting',
-        'Twine - making branching narrative RPG games',
-        'English - C2',
-        'Polish - Native',
-        'Teamwork and cooperation - not a stranger to international teams',
-        'Organization of work and time management',
-        'Self-motivation and autonomy',
-      ]),
-    },
-    {
       heading: 'Experience',
       entries: [
         {
@@ -50,6 +37,19 @@ export const CV: { title: string; subtitle: string[]; sections: DocSection[]; cl
     {
       heading: 'Education',
       entries: [{ title: '2017 - 2020 - University of Economics in Kraków', lines: ['Modern Business Management – bachelor degree'] }],
+    },
+    {
+      heading: 'Skills',
+      entries: plain([
+        'Writing',
+        'Songwriting',
+        'Twine - making branching narrative RPG games',
+        'English - C2',
+        'Polish - Native',
+        'Teamwork and cooperation - not a stranger to international teams',
+        'Organization of work and time management',
+        'Self-motivation and autonomy',
+      ]),
     },
     {
       heading: 'Interests',

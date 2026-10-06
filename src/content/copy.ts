@@ -12,9 +12,18 @@ export const CONTACT = { email: 'kulijewiczmichal@gmail.com', linkedin: 'https:/
 /** Files in /public. */
 export const PDF: Record<ItemId, string> = { cv: '/michal-kulijewicz-cv.pdf', letter: '/michal-kulijewicz-letter.pdf' };
 
-export const items: Record<ItemId, { name: string; rarity: 'Legendary' | 'Rare'; flavour: string; weight: number }> = {
-  cv: { name: 'Scroll of Curriculum Vitae', rarity: 'Legendary', flavour: 'Contains one (1) writer. Handle with interest.', weight: 0.1 },
-  letter: { name: 'Scroll of Motivational Letter', rarity: 'Rare', flavour: 'Warm to the touch. Someone meant every word.', weight: 0.05 },
+export const items: Record<
+  ItemId,
+  { name: string; rarity: 'Legendary' | 'Rare'; flavour: string; attribution?: string; weight: number }
+> = {
+  cv: { name: 'Scroll of Curriculum Vitae', rarity: 'Legendary', flavour: 'YOU SHALL EMPLOY ME! …pretty please?', weight: 0.1 },
+  letter: {
+    name: 'Scroll of Motivational Letter',
+    rarity: 'Rare',
+    flavour: 'The ship is safest when it is in port, but that’s not what ships were built for.',
+    attribution: 'Paulo Coelho',
+    weight: 0.1,
+  },
 };
 
 export const copy = {
@@ -86,6 +95,7 @@ export const copy = {
     rerollsLeft: (n: number) => `${n} left`,
     reveal: 'Reveal',
     holdHint: 'Click your dice to hold them, then reroll the rest — or reveal.',
+    stake: 'At stake',
   },
   hands: {
     five: 'Five of a kind',
@@ -111,7 +121,7 @@ export const copy = {
   doubleOrNothing: 'Double or nothing, traveller. The other scroll against the one in your satchel.',
   received: (name: string) => `${name} added to your satchel.`,
   epilogue: [
-    'Both scrolls are now yours, traveller. I trust you will find a great use for the power stored within them.',
+    'Both scrolls are now yours, traveller. I trust you will find a great use for the power stored within.',
     'When you are done here, the cat in the lower section of the city should know how to reach the scribe.',
     'Farewell, traveller.',
   ],
@@ -123,6 +133,11 @@ export const copy = {
   ],
   rewind: 'Rewind',
   druidLabel: 'Talk to Haslin the druid',
+  /** Hover nameplates under the characters. */
+  nameplates: {
+    druid: { name: 'Haslin', sub: 'Druid · and Erl, his owl' },
+    cat: { name: 'The Cat', sub: 'Pet me' },
+  },
   satchel: { title: 'Satchel', empty: 'Empty. For now.', open: 'Open satchel', type: 'Scroll', weight: 'Weight' },
   viewer: { close: 'Roll it up', pdf: 'Take a copy (PDF)' },
   cat: { label: 'Pet the cat', meow: 'Mrrrow.' },

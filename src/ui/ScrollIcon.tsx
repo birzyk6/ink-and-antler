@@ -2,7 +2,7 @@ import { useId } from 'react';
 import type { ItemId } from '../game/items';
 
 /** Ribbon and seal colours per scroll: the CV is red and gold, the letter blue and red. */
-const VARIANTS: Record<ItemId, { ribbon: [string, string]; seal: [string, string] }> = {
+export const VARIANTS: Record<ItemId, { ribbon: [string, string]; seal: [string, string] }> = {
   cv: { ribbon: ['#c8443a', '#6e1a12'], seal: ['#f4cc62', '#94640f'] },
   letter: { ribbon: ['#4a7fc4', '#1d3a63'], seal: ['#c23a2c', '#5e0f0b'] },
 };

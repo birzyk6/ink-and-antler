@@ -1,15 +1,39 @@
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
-import { Fragment, useEffect, useRef, useState, type ReactNode } from 'react';
+import { Fragment, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { PDF, copy, items } from '../content/copy';
-import { CV, MOTIVATION_LETTER } from '../content/documents';
+import { CV, MOTIVATION_LETTER, type DocSection } from '../content/documents';
 import { prefersReducedMotion } from '../engine/motion';
+import type { ItemId } from '../game/items';
 import { useGame } from '../game/store';
-import { PixelArt } from '../pixel/PixelArt';
-import { SEAL, SEAL_PALETTE } from '../pixel/sprites';
+import { WaxSeal } from './WaxSeal';
 import './ui.css';
 
-const SEAL_MS = 900;
+const FONT_MAX = 20;
+const FONT_MIN = 13;
+
+/** Shrinks the scroll's type until the whole text fits on screen, so it never needs scrolling. */
+function useFitToScreen(ref: React.RefObject<HTMLElement | null>) {
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const fit = () => {
+      let size = FONT_MAX;
+      el.style.fontSize = `${size}px`;
+      while (el.scrollHeight > el.clientHeight + 1 && size > FONT_MIN) {
+        size -= 0.5;
+        el.style.fontSize = `${size}px`;
+      }
+    };
+    fit();
+    document.fonts?.ready.then(fit);
+    window.addEventListener('resize', fit);
+    return () => window.removeEventListener('resize', fit);
+  }, [ref]);
+}
+
+/** Parchment showing between the rods while the scroll is still rolled up. */
+const CLOSED_PX = 26;
 
 export function DocumentViewer() {
   const viewing = useGame((s) => s.viewing);
@@ -20,46 +44,95 @@ export function DocumentViewer() {
   return (
     <div className="modal-backdrop" onClick={close}>
       <div role="dialog" aria-modal="true" aria-label={items[viewing].name} onClick={(e) => e.stopPropagation()}>
-        {viewing === 'cv' ? (
-          <ScrollDoc pdf={PDF.cv} onClose={close}>
-            <CvBody />
-          </ScrollDoc>
-        ) : (
-          <SealedLetter firstTime={firstTime} onClose={close} />
-        )}
+        <ScrollDoc key={viewing} id={viewing} sealed={firstTime} onClose={close}>
+          {viewing === 'cv' ? <CvBody /> : <LetterBody />}
+        </ScrollDoc>
       </div>
     </div>
   );
 }
 
-function ScrollDoc({ pdf, onClose, children }: { pdf: string; onClose: () => void; children: ReactNode }) {
+/**
+ * Both scrolls open the same way: the first time, the wax seal cracks and falls away with its
+ * ribbon; every time, the bottom rod rolls down and unfurls the parchment.
+ */
+function ScrollDoc({ id, sealed, onClose, children }: { id: ItemId; sealed: boolean; onClose: () => void; children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLElement>(null);
+  const [showSeal] = useState(() => sealed && !prefersReducedMotion());
+  // Before useGSAP, so the unroll measures the fitted height.
+  useFitToScreen(bodyRef);
   useGSAP(
     () => {
       if (prefersReducedMotion()) return;
-      gsap
-        .timeline()
-        .from('.scroll-body', { clipPath: 'inset(0 0 100% 0)', duration: 0.7, ease: 'power2.out' })
-        .from('.scroll-rod--bottom', { y: '-=40vh', duration: 0.7, ease: 'power2.out' }, 0)
-        .from('.scroll-body > *', { opacity: 0, y: 6, stagger: 0.05, duration: 0.25 }, 0.4);
+      // Closed, the rods sit together around a sliver of parchment, centred where the open scroll will be.
+      const open = ref.current!.querySelector<HTMLElement>('.scroll-sheet')!.offsetHeight - CLOSED_PX;
+      const tl = gsap.timeline();
+      tl.set('.scroll-sheet', { clipPath: `inset(0 0 ${open}px 0)` })
+        .set('.scroll-rod--bottom', { y: -open })
+        .fromTo(ref.current, { y: open / 2, scale: 0.85, opacity: 0 }, { y: open / 2, scale: 1, opacity: 1, duration: 0.3, ease: 'back.out(2)' });
+      if (showSeal) {
+        tl.to('.wax-seal', { rotation: 7, duration: 0.07, ease: 'none', yoyo: true, repeat: 5 }, '+=0.15')
+          .to('.wax-seal', { rotation: 0, duration: 0.05 })
+          .fromTo('.wax-crack', { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.18, ease: 'power1.in' })
+          .addLabel('break', '+=0.12')
+          .set('.wax-crack', { opacity: 0 }, 'break')
+          .to('.wax-half--left', { x: -46, y: 90, rotation: -55, svgOrigin: '42 42', duration: 0.55, ease: 'power2.in' }, 'break')
+          .to('.wax-half--right', { x: 50, y: 105, rotation: 48, svgOrigin: '42 42', duration: 0.6, ease: 'power2.in' }, 'break')
+          .to('.wax-seal', { opacity: 0, duration: 0.2 }, 'break+=0.4')
+          .to('.scroll-ribbon', { y: 60, rotation: 8, opacity: 0, duration: 0.45, ease: 'power2.in' }, 'break+=0.05')
+          .fromTo(
+            '.wax-shard',
+            { x: 0, y: 0, opacity: 1, scale: 1 },
+            {
+              x: () => gsap.utils.random(-70, 70),
+              y: () => gsap.utils.random(-50, 40),
+              rotation: () => gsap.utils.random(-180, 180),
+              opacity: 0,
+              scale: 0.4,
+              duration: 0.55,
+              ease: 'power2.out',
+            },
+            'break',
+          )
+          .set('.scroll-tie', { display: 'none' });
+      }
+      tl.addLabel('unroll')
+        .to('.scroll-sheet', { clipPath: 'inset(0 0 0px 0)', duration: 0.9, ease: 'power2.inOut' }, 'unroll')
+        .to(ref.current, { y: 0, duration: 0.9, ease: 'power2.inOut' }, 'unroll')
+        .to('.scroll-rod--bottom', { y: 0, duration: 0.9, ease: 'power2.inOut' }, 'unroll')
+        // Grain sliding down the rod reads as the rod turning while it unrolls.
+        .fromTo('.scroll-rod--bottom', { backgroundPositionY: '0px' }, { backgroundPositionY: '72px', duration: 0.9, ease: 'power2.inOut' }, 'unroll')
+        .from('.scroll-body > *', { opacity: 0, y: 6, stagger: 0.04, duration: 0.25 }, 'unroll+=0.5');
     },
     { scope: ref },
   );
   return (
     <div ref={ref} className="scroll-doc">
       <div className="scroll-rod" />
-      <article className="scroll-body parchment-hand">
-        {children}
-        <div className="doc-actions">
-          <button type="button" className="px-btn" onClick={onClose}>
-            {copy.viewer.close}
-          </button>
-          <a className="px-btn" href={pdf} download>
-            {copy.viewer.pdf}
-          </a>
-        </div>
-      </article>
+      <div className="scroll-sheet">
+        <article ref={bodyRef} className="scroll-body parchment parchment-hand">
+          {children}
+          <div className="doc-actions">
+            <button type="button" className="px-btn" onClick={onClose}>
+              {copy.viewer.close}
+            </button>
+            <a className="px-btn" href={PDF[id]} download>
+              {copy.viewer.pdf}
+            </a>
+          </div>
+        </article>
+      </div>
       <div className="scroll-rod scroll-rod--bottom" />
+      {showSeal && (
+        <div className={`scroll-tie scroll-tie--${id}`} aria-hidden="true">
+          <div className="scroll-ribbon" />
+          {Array.from({ length: 7 }, (_, i) => (
+            <span key={i} className="wax-shard" />
+          ))}
+          <WaxSeal id={id} />
+        </div>
+      )}
     </div>
   );
 }
@@ -70,26 +143,33 @@ function CvBody() {
       <h2>{CV.title}</h2>
       <p className="doc-sub">{CV.subtitle.join(' · ')}</p>
       {CV.sections.map((s) => (
-        <section key={s.heading}>
-          <h3>{s.heading}</h3>
-          <ul>
-            {s.entries.map((e) => (
-              <li key={e.title}>
-                {e.title}
-                {e.lines && (
-                  <ul className="doc-sublist">
-                    {e.lines.map((l) => (
-                      <li key={l}>{l}</li>
-                    ))}
-                  </ul>
-                )}
-              </li>
-            ))}
-          </ul>
-        </section>
+        <CvSection key={s.heading} section={s} />
       ))}
       <p className="doc-closing">{CV.closing}</p>
     </>
+  );
+}
+
+function CvSection({ section }: { section: DocSection }) {
+  return (
+    <section>
+      <h3>{section.heading}</h3>
+      {/* Lists of one-liners (skills, interests) wrap into two columns to save height. */}
+      <ul className={section.entries.every((e) => !e.lines) ? 'doc-list--short' : undefined}>
+        {section.entries.map((e) => (
+          <li key={e.title}>
+            {e.title}
+            {e.lines && (
+              <ul className="doc-sublist">
+                {e.lines.map((l) => (
+                  <li key={l}>{l}</li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </section>
   );
 }
 
@@ -122,41 +202,5 @@ function LetterBody() {
         {MOTIVATION_LETTER.signature}
       </p>
     </>
-  );
-}
-
-/** First opening cracks the wax seal, then the letter unrolls like the CV. */
-function SealedLetter({ firstTime, onClose }: { firstTime: boolean; onClose: () => void }) {
-  const [sealed, setSealed] = useState(() => firstTime && !prefersReducedMotion());
-  const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!sealed) return;
-    const t = window.setTimeout(() => setSealed(false), SEAL_MS);
-    return () => window.clearTimeout(t);
-  }, [sealed]);
-
-  useGSAP(
-    () => {
-      if (!sealed || prefersReducedMotion()) return;
-      gsap
-        .timeline()
-        .to('.seal', { rotation: -8, scale: 1.1, duration: 0.2, ease: 'power1.inOut', yoyo: true, repeat: 3 })
-        .to('.seal', { scale: 1.6, rotation: 20, opacity: 0, duration: 0.3, ease: 'power2.in' });
-    },
-    { dependencies: [sealed], scope: ref },
-  );
-
-  if (!sealed) {
-    return (
-      <ScrollDoc pdf={PDF.letter} onClose={onClose}>
-        <LetterBody />
-      </ScrollDoc>
-    );
-  }
-  return (
-    <div ref={ref} className="letter-sealed">
-      <PixelArt rows={SEAL} palette={SEAL_PALETTE} scale={12} className="seal" />
-    </div>
   );
 }

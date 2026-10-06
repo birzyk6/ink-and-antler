@@ -35,3 +35,35 @@
   font-size: 20px;
   white-space: nowrap;
 }
+/* Typed and skippable: a small blinking arrow says "click to go on". */
+.bubble--skippable { padding-right: 34px; }
+.bubble--skippable::before {
+  content: '▾';
+  position: absolute;
+  right: 10px;
+  bottom: 6px;
+  font-size: 18px;
+  color: var(--wood);
+  animation: bob 1s steps(2) infinite;
+}
+/* Shown while the preceding hit button is hovered or focused. Sits under the character's feet. */
+.nameplate {
+  position: absolute;
+  left: 50%;
+  top: calc(100% + 8px);
+  z-index: 1;
+  translate: -50% -4px;
+  display: grid;
+  justify-items: center;
+  padding: 6px 14px 7px;
+  white-space: nowrap;
+  pointer-events: none;
+  background: linear-gradient(#241a12f0, #120c08f0);
+  border: 2px solid #8a6a38;
+  box-shadow: inset 0 0 0 1px #000, 0 4px 0 rgb(0 0 0 / 0.35);
+  opacity: 0;
+  transition: opacity 150ms ease-out, translate 150ms ease-out;
+}
+:is(.druid-hit, .cat-hit):is(:hover, :focus-visible) + .nameplate { opacity: 1; translate: -50% 0; }
+.nameplate-name { font-family: var(--font-title); font-size: 24px; line-height: 1.1; color: var(--gold); }
+.nameplate-sub { font-size: 16px; font-style: italic; color: #d9c9a8; }

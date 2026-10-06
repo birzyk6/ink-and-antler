@@ -14,6 +14,7 @@ export function Satchel() {
   const opened = useGame((s) => s.opened);
   const open = useGame((s) => s.satchelOpen);
   const receiving = useGame((s) => s.justReceived.length > 0);
+  const talking = useGame((s) => s.node !== null);
   const setOpen = useGame((s) => s.setSatchelOpen);
   const viewItem = useGame((s) => s.viewItem);
   const [hovered, setHovered] = useState<ItemId | null>(null);
@@ -33,7 +34,7 @@ export function Satchel() {
         <PixelArt rows={SATCHEL} palette={LEATHER} scale={4} />
         {unread > 0 && <span className="satchel-badge">{unread}</span>}
       </button>
-      {unread > 0 && !open && <div className="hint px-parchment satchel-hint">{copy.satchelHint}</div>}
+      {unread > 0 && !open && !talking && <div className="hint px-parchment satchel-hint">{copy.satchelHint}</div>}
       {open && (
         <aside className="satchel-panel px-panel" aria-label={copy.satchel.title}>
           <h2>{copy.satchel.title}</h2>
@@ -81,6 +82,7 @@ function ItemCard({ id }: { id: ItemId | null }) {
       </p>
       <hr className="item-rule" />
       <p className="item-flavour">“{it.flavour}”</p>
+      {it.attribution && <p className="item-attribution">— {it.attribution}</p>}
       <p className="item-weight">
         {copy.satchel.weight} {it.weight}
       </p>

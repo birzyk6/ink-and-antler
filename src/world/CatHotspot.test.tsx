@@ -6,7 +6,7 @@ import { INITIAL, useGame } from '../game/store';
 import type { SceneHandle } from '../scene/createScene';
 import { CatHotspot } from './CatHotspot';
 
-const scene = { pinAnchor: () => () => {} } as unknown as SceneHandle;
+const scene = { pinAnchor: () => () => {}, hoverGlow: () => () => {} } as unknown as SceneHandle;
 
 beforeEach(() => {
   localStorage.clear();

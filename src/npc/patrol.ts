@@ -14,10 +14,13 @@ export interface NpcState {
 }
 
 /** World px per second. The entrance is brisk so nobody waits for him. */
-export const ENTER_SPEED = 220;
-export const WALK_SPEED = 90;
+export const ENTER_SPEED = 160;
+export const WALK_SPEED = 60;
 export const MIN_STEP = 160;
-const WALK_FRAME_MS = 125;
+/** 4 frames × 150ms = one ~36px step in 0.6s, matching WALK_SPEED so the feet don't skate. */
+const WALK_FRAME_MS = 150;
+/** The entrance covers ground faster than the legs; capped so the cycle stays readable. */
+const ENTER_ANIM_RATE = 1.6;
 const IDLE_FRAME_MS = 500;
 
 export function createEnteringNpc(): NpcState {
@@ -43,7 +46,7 @@ export function pickTarget(x: number, rng: Rng): number {
 }
 
 export function stepNpc(s: NpcState, dtMs: number, rng: Rng, opts: { patrol: boolean }): NpcState {
-  const animMs = s.animMs + dtMs;
+  const animMs = s.animMs + (s.mode === 'enter' ? dtMs * ENTER_ANIM_RATE : dtMs);
   if (s.mode === 'enter' || s.mode === 'walk') {
     const delta = s.targetX - s.x;
     const stepPx = ((s.mode === 'enter' ? ENTER_SPEED : WALK_SPEED) * dtMs) / 1000;

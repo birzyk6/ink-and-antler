@@ -22,9 +22,8 @@ export default function App() {
   const [scene, setScene] = useState<SceneHandle | null>(null);
   const [sceneFailed, setSceneFailed] = useState(false);
   const [skipIntro] = useState(() => useGame.getState().introSeen);
-  const fx = useSceneFx(scene);
-  // fx is a ref; the intro reads it when each torch lights.
-  const { ready } = useSceneIntro(scene, skipIntro, (x, y) => fx.current?.ignite(x, y));
+  useSceneFx(scene);
+  const { ready } = useSceneIntro(scene, skipIntro);
   const viewing = useGame((s) => s.viewing);
   useGlobalKeys();
 
