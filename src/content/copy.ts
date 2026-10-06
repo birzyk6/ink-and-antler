@@ -134,15 +134,6 @@ export const copy = {
     linkedin: 'LinkedIn',
     close: 'Farewell',
   },
-  /** Legacy: removed in Task 6 with the signpost. */
-  contact: {
-    title: 'Fast Travel',
-    intro: 'Fast Travel to:',
-    email: 'Postal Office',
-    linkedin: 'Guild Hall (LinkedIn)',
-    close: 'Farewell',
-    label: 'Fast travel',
-  },
   skip: 'Skip the tale →',
   reset: 'Begin anew',
   portraitGate: { text: 'The town is wider than your screen. Turn your device sideways, traveller.', anyway: 'Read the scroll anyway' },

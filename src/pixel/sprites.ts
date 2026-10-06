@@ -100,26 +100,6 @@ export const CLOUD = [
   '..oooooooooooooooooooo..',
 ];
 
-const POST = '......oWWo......';
-export const SIGNPOST = [
-  '.......oo.......',
-  POST,
-  'oooooooWWooooo..',
-  'oLLLLLLLLLLLLLo.',
-  'oWWWWWWWWWWWWWWo',
-  'oWWWWWWWWWWWWWo.',
-  'oooooooWWooooo..',
-  POST,
-  '..oooooWWooooooo',
-  '.oLLLLLLLLLLLLLo',
-  'oWWWWWWWWWWWWWWo',
-  '.oWWWWWWWWWWWWWo',
-  '..oooooWWooooooo',
-  POST, POST, POST, POST, POST, POST, POST, POST, POST,
-  '.....oDDDDo.....',
-  '....oooooooo....',
-];
-
 /** Carved oak board: outline, dark frame, gold inlay, planks with grain. Uses the WOOD palette. */
 export function signBoardRows(w: number, h: number): string[] {
   const rows: string[] = [];
@@ -160,7 +140,6 @@ export const SPRITE_REGISTRY: { name: string; rows: string[]; palette: Palette }
   { name: 'torch', rows: TORCH, palette: IRON_WOOD },
   ...FLAMES.map((rows, i) => ({ name: `flame${i}`, rows, palette: FLAME })),
   { name: 'cloud', rows: CLOUD, palette: CLOUD_PALETTE },
-  { name: 'signpost', rows: SIGNPOST, palette: WOOD },
   { name: 'board', rows: signBoardRows(120, 36), palette: WOOD },
   { name: 'bar', rows: barRows(150), palette: IRON },
   { name: 'chain', rows: chainRows(4), palette: IRON },

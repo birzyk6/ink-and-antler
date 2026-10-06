@@ -15,8 +15,8 @@ export const ENTER_START_X = -120;
 
 /** Title sign: horizontal centre and the y of its iron beam. */
 export const SIGN = { x: 960, top: 96 };
-/** Contact signpost by the stairs: horizontal centre and feet. */
-export const SIGNPOST = { x: 1210, feetY: 985 };
+/** The cat painted on the lower street (fast travel): horizontal centre and feet. */
+export const CAT = { x: 342, feetY: 972 };
 export const FORGE = { x: 140, y: 520 };
 export const CHIMNEYS = [
   { x: 152, y: 292 },

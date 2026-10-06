@@ -1,14 +1,14 @@
 import gsap from 'gsap';
 import { Sprite } from 'pixi.js';
-import { CLOUD, CLOUD_PALETTE, SIGNPOST as SIGNPOST_ROWS, WOOD } from '../pixel/sprites';
-import { CHIMNEYS, FORGE, SIGNPOST, WORLD_W } from '../world/layout';
+import { CLOUD, CLOUD_PALETTE } from '../pixel/sprites';
+import { CHIMNEYS, FORGE, WORLD_W } from '../world/layout';
 import type { SceneHandle } from './createScene';
 import type { ParticleLayer } from './particleLayer';
 import { EMBERS, SMOKE } from './particles';
 import { pixelTexture } from './pixelTexture';
 import { radialTexture } from './radialTexture';
 
-/** Forge glow, embers, chimney smoke, a drifting cloud and the signpost. Returns a cleanup. */
+/** Forge glow, embers, chimney smoke and a drifting cloud. Returns a cleanup. */
 export function setupAmbient(h: SceneHandle, particles: ParticleLayer | null, calm = false): () => void {
   const r = h.app.renderer;
 
@@ -27,11 +27,6 @@ export function setupAmbient(h: SceneHandle, particles: ParticleLayer | null, ca
   h.layers.back.addChild(forge);
   const flicker = calm ? null : gsap.to(forge, { alpha: 0.55, duration: 0.18, ease: 'steps(2)', yoyo: true, repeat: -1 });
 
-  const post = new Sprite(pixelTexture(r, SIGNPOST_ROWS, WOOD));
-  post.scale.set(5);
-  post.position.set(SIGNPOST.x - 40, SIGNPOST.feetY - 120);
-  h.layers.back.addChild(post);
-
   const stops = particles
     ? [
         particles.addEmitter(() => EMBERS(FORGE.x + (Math.random() - 0.5) * 30, FORGE.y), 6),
@@ -43,6 +38,6 @@ export function setupAmbient(h: SceneHandle, particles: ParticleLayer | null, ca
     drift?.kill();
     flicker?.kill();
     stops.forEach((s) => s());
-    [cloud, forge, post].forEach((s) => s.destroy());
+    [cloud, forge].forEach((s) => s.destroy());
   };
 }

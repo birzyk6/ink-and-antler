@@ -14,7 +14,7 @@ import { Satchel } from './ui/Satchel';
 import { Splash } from './ui/Splash';
 import { TopBar } from './ui/TopBar';
 import { useGlobalKeys } from './ui/useGlobalKeys';
-import { SignpostHotspot } from './world/SignpostHotspot';
+import { CatHotspot } from './world/CatHotspot';
 
 const DocumentViewer = lazy(() => import('./ui/DocumentViewer').then(m => ({ default: m.DocumentViewer })));
 
@@ -34,7 +34,7 @@ export default function App() {
         {SIGN_NAME} — {SIGN_SUBTITLE}
       </h1>
       <SceneCanvas onReady={setScene} druidOverlay={<DruidOverlay />} onError={() => setSceneFailed(true)} />
-      <SignpostHotspot scene={scene} />
+      <CatHotspot scene={scene} />
       <TopBar />
       <Satchel />
       <DialoguePanel />
