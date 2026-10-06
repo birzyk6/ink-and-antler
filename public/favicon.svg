@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <defs>
+    <linearGradient id="s" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#fff" stop-opacity="0.3"/>
+      <stop offset="0.45" stop-color="#fff" stop-opacity="0"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0.3"/>
+    </linearGradient>
+  </defs>
+  <g stroke="#ffdebe" stroke-opacity="0.32" stroke-width="0.8" stroke-linejoin="round">
+    <polygon points="50,3 9,27 50,24" fill="#e2644e"/>
+    <polygon points="50,3 91,27 50,24" fill="#c4453a"/>
+    <polygon points="9,27 50,24 21,67" fill="#c4453a"/>
+    <polygon points="9,27 9,73 21,67" fill="#8e2a23"/>
+    <polygon points="91,27 50,24 79,67" fill="#8e2a23"/>
+    <polygon points="21,67 50,97 79,67" fill="#8e2a23"/>
+    <polygon points="91,27 91,73 79,67" fill="#651b16"/>
+    <polygon points="9,73 50,97 21,67" fill="#651b16"/>
+    <polygon points="91,73 50,97 79,67" fill="#651b16"/>
+    <polygon points="50,24 21,67 79,67" fill="#b4372e"/>
+  </g>
+  <polygon points="50,3 91,27 91,73 50,97 9,73 9,27" fill="url(#s)"/>
+  <polygon points="50,3 91,27 91,73 50,97 9,73 9,27" fill="none" stroke="#1b1210" stroke-width="5" stroke-linejoin="round"/>
+  <text x="50" y="56" text-anchor="middle" dominant-baseline="middle" font-family="Georgia, 'Times New Roman', serif" font-weight="bold" font-size="30" fill="#fff3d6" stroke="#1b1210" stroke-width="4" stroke-linejoin="round" paint-order="stroke">20</text>
+</svg>
