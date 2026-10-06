@@ -42,9 +42,9 @@ describe('modifiers and effects', () => {
     expect(modifierFor(null, 'WIS')).toBe(0);
   });
 
-  it('uses the DCs from the spec', () => {
+  it('offers the four tricks from the script with their DCs', () => {
     expect(Object.fromEntries(Object.entries(CHECKS).map(([k, v]) => [k, v.dc]))).toEqual({
-      persuasion: 12, investigation: 14, sleight: 15, insight: 10, animal: 8,
+      persuasion: 12, investigation: 14, sleight: 15, animal: 8,
     });
   });
 
@@ -52,12 +52,11 @@ describe('modifiers and effects', () => {
     expect(applyCheck(NO_MODS, 'persuasion', true).extraRerolls).toBe(1);
     expect(applyCheck(NO_MODS, 'investigation', true).plusOneDie).toBe(true);
     expect(applyCheck(NO_MODS, 'sleight', true).setOneSix).toBe(true);
-    expect(applyCheck(NO_MODS, 'insight', true).seeOssian).toBe(true);
     expect(applyCheck(NO_MODS, 'animal', true).tiesToPlayer).toBe(true);
   });
 
-  it('only a failed sleight of hand has a penalty', () => {
-    expect(applyCheck(NO_MODS, 'sleight', false).ossianExtraReroll).toBe(true);
-    expect(applyCheck(NO_MODS, 'insight', false)).toEqual(NO_MODS);
+  it('only a failed switcheroo has a penalty', () => {
+    expect(applyCheck(NO_MODS, 'sleight', false).haslinExtraReroll).toBe(true);
+    expect(applyCheck(NO_MODS, 'animal', false)).toEqual(NO_MODS);
   });
 });

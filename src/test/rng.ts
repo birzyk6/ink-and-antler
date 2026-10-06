@@ -9,3 +9,6 @@ export const face = (f: number): number => (f - 0.5) / 6;
 
 /** rng values that rollD20() turns into roll r (1–20). Natural 20 uses the 45% gate. */
 export const d20 = (r: number): number[] => (r === 20 ? [0.1] : [0.9, (r - 0.5) / 19]);
+
+/** rng values that rollDie() turns into these faces, in order. */
+export const faces = (...fs: number[]): number[] => fs.map(face);
