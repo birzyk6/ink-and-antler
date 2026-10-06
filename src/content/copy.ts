@@ -8,109 +8,142 @@ export const FIRST_NAME = NAME.split(' ')[0];
 export const SIGN_NAME = 'The Ink & Antler';
 export const SIGN_SUBTITLE = `Home of ${NAME}, Writer`;
 
-/** Replace with real details before sending. */
-export const CONTACT = { email: 'hello@example.com', linkedin: 'https://www.linkedin.com/' };
-/** Set to e.g. '/michal-kulijewicz-cv.pdf' once that file exists in /public. */
+export const CONTACT = { email: 'kulijewiczmichal@gmail.com', linkedin: 'https://www.linkedin.com/in/varmblixt' };
+/** Files in /public. */
+export const PDF: Record<ItemId, string> = { cv: '/michal-kulijewicz-cv.pdf', letter: '/michal-kulijewicz-letter.pdf' };
+/** Legacy: removed in Task 5 once the viewer uses PDF. */
 export const CV_PDF_URL: string | null = null;
 
 export const items: Record<ItemId, { name: string; rarity: 'Legendary' | 'Rare'; flavour: string; weight: number }> = {
   cv: { name: 'Scroll of Curriculum Vitae', rarity: 'Legendary', flavour: 'Contains one (1) writer. Handle with interest.', weight: 0.1 },
-  letter: { name: 'Sealed Letter of Motivation', rarity: 'Rare', flavour: 'Warm to the touch. Someone meant every word.', weight: 0.05 },
+  letter: { name: 'Scroll of Motivational Letter', rarity: 'Rare', flavour: 'Warm to the touch. Someone meant every word.', weight: 0.05 },
 };
 
 export const copy = {
   loading: 'Rolling for initiative…',
+  speaker: 'Haslin',
   greeting: [
-    'Hail, traveller. You have the look of someone searching for a writer.',
-    'Fortunately, I have the look of someone guarding one.',
+    'Welcome, traveller. You must be here, searching for the legendary scrolls… Am I right?',
+    'How do I know? Nature has its ways, traveller.',
   ],
   hint: 'Click the druid to speak.',
-  nudge: "Pim says you're allowed to click. Pim is rarely wrong.",
+  nudge: 'Erl says you shan’t be shy. Just click.',
   satchelHint: 'Open your satchel to read it.',
-  originPrompt: 'Before we trade words — who approaches?',
+  originPrompt: 'Before we get to business, my name is Haslin, yes, related to Halsin. And yes, also a druid. Who stands before me?',
   origins: {
-    CHA: { label: 'A recruiter, from a studio in Ghent.', reply: 'Ghent! Pim — the good dice. The ones without the dent.' },
-    INT: { label: 'A scholar. I read the fine print.', reply: "Then you'll enjoy these dice. They have very fine print." },
-    DEX: { label: 'Nobody. Just passing through.', reply: 'Nobody has quick fingers. Keep them where Pim can see them.' },
-    WIS: { label: 'An old friend of the forest.', reply: "Pim doesn't remember you. Pim remembers everyone. Interesting." },
+    CHA: {
+      label: 'I’m a minstrel, from a land of wonders, crossing these borders to broaden my choices. And those scrolls are… ekhm… heard those are real good.',
+      reply: 'Ahhh, a poet. Erl, fetch the dice. The ones Volo gifted us. We shall play.',
+    },
+    INT: {
+      label: 'A scholar. My hunger for knowledge knows no bounds. And I heard these scrolls are a wellspring of, well… knowledge.',
+      reply: 'Your pursuit is commendable, but nature is of fickle, well… nature. Thus you shall put your fate in dice.',
+    },
+    DEX: { label: 'A crook.', reply: 'And definitely not level one. Erl, dice.' },
+    WIS: {
+      label: 'Halins, yes, related to Halsin.',
+      reply: 'Ha! A small world, I never got along with your side of the family. Blood or not, we shall play either way.',
+    },
   } satisfies Record<Ability, { label: string; reply: string }>,
-  wagerPrompt: [
-    `Two treasures. The deeds of ${NAME}, written in a steady hand — and a letter, sealed, that explains why.`,
-    'Sell them? Coin is dull. Chance has manners. Which will you play for?',
-  ],
-  wagerAgain: 'One treasure left. Same terms. Which will you play for?',
-  wagerChoice: { cv: 'The scroll.', letter: 'The letter.' } satisfies Record<ItemId, string>,
-  about: "What's on them?",
-  aboutReply: [
-    `The scroll: where ${FIRST_NAME} has been, what's been written, which quests were survived.`,
-    "The letter: the part that can't fit on a scroll. Pim has read both. Pim wept. Pim denies this.",
-  ],
-  back: 'Back to the wager.',
-  farewell: 'Not today.',
-  farewellFinal: 'Farewell.',
-  checkPrompt: 'Before the bones fall — care to tip the odds?',
-  justRoll: 'Just roll the bones.',
+  wagerPrompt: 'Two ancient scrolls. Both worth a small fortune, and if it smiles at you, you can have them. What will be our first wager?',
+  wagerChoice: { cv: 'The scroll.', letter: 'The other scroll.' } satisfies Record<ItemId, string>,
+  checkPrompt: 'Shall we?',
+  oneLeft: 'One treasure remains. Same terms. Shall we?',
+  justRoll: 'Just roll the dice.',
   checks: {
-    persuasion: { label: 'Surely a guest rolls first. And twice?', success: 'Fine. Roll twice. Pim, stop looking at me like that.', fail: 'A guest, yes. A fool, no.' },
-    investigation: { label: 'Let me take a look at those dice.', success: '…Ah. That one is loaded. It must have wandered in from another table. Swap it.', fail: "They're dice. They have dots. Well spotted." },
-    sleight: { label: 'Palm a die of your own.', success: 'Ossian notices nothing. Pim notices everything, and says nothing.', fail: 'Pim screeches. "Pim saw that. Pim respects it. Pim is also telling everyone."' },
-    insight: { label: 'Watch his eyes as he rolls.', success: 'He glances at his dice twice. Now you know what he holds.', fail: "He blinks a lot. Then again, he's a druid." },
-    animal: { label: 'Offer Pim a crumb of bread.', success: 'Pim accepts. Pim is now on your side of the table.', fail: 'Pim eats the crumb and gives nothing back. Classic Pim.' },
+    persuasion: {
+      label: 'Surely a guest rolls first. And twice?',
+      success: 'You know what? Go ahead, let us level the playing field.',
+      fail: 'Surely not.',
+    },
+    investigation: {
+      label: 'Let me take a look at those dice.',
+      success: '…is that one a sphere? Ahh… that’s Erl’s pet project, he’s been rolling it non stop for the past 200 days or so. Here, a fresh one.',
+      fail: 'They’re dice. They have dots. Well spotted.',
+    },
+    sleight: {
+      label: 'Do the old switcheroo.',
+      success: 'Haslin is none the wiser. Erl is wiser, winks at you.',
+      fail: 'Haslin is none the wiser. Erl is wiser, and you’ve been busted.',
+    },
+    animal: {
+      label: 'Offer Erl a Rivellon Fry.',
+      success: 'Erl accepts. Erl devours. Erl approves.',
+      fail: 'Erl eats the fry, frowns and flies away. Classic Erl.',
+    },
   } satisfies Record<CheckId, { label: string; success: string; fail: string }>,
   effects: {
     persuasion: '+1 reroll',
     investigation: '+1 to your lowest die',
-    sleight: 'one of your dice becomes a 6',
-    insight: "you see Ossian's dice",
+    sleight: 'your lowest die becomes a 6',
     animal: 'ties go to you',
   } satisfies Record<CheckId, string>,
-  nat1: 'A natural one. The bones wince.',
-  rollContinue: 'Let the bones fall.',
-  nat20: {
-    both: [
-      '…Twenty. Twenty. Pim, did you sell them the good die again?',
-      'Fine. Fine! Take both. The scroll and the letter. A roll like that deserves the whole chronicle.',
-    ],
-    last: ["Twenty! Take the other one too — I mean, it's the only one left, but take it triumphantly."],
-    take: 'Take them.',
-  },
+  nat1: 'Erl cocks his head, blinks. His screeches… a chuckle?',
+  rollContinue: 'Let the dice fall.',
   dice: {
-    ossian: 'Ossian',
+    haslin: 'Haslin',
     you: 'You',
-    reroll: (n: number) => `Reroll unheld (${n} left)`,
-    reveal: 'Reveal the bones',
+    hiddenDie: 'Haslin’s die, hidden',
+    reroll: 'Reroll',
+    rerollsLeft: (n: number) => `${n} left`,
+    reveal: 'Reveal',
     holdHint: 'Click your dice to hold them, then reroll the rest — or reveal.',
   },
-  hands: { triple: 'Three of a kind', run: 'A run', pair: 'A pair', sum: 'Only the sum' } satisfies Record<HandRank, string>,
-  win: 'The bones have spoken. They said your name, which is rude of them.',
-  triple: "Three of a kind! Pim, write this down. Pim can't write. Remember it, then.",
-  pim: '…Pim has overruled me. Pim is the senior partner.',
-  lose: "The bones have spoken. They said 'no'. They often do.",
-  rematch: 'Again. The bones were still waking up.',
+  hands: {
+    five: 'Five of a kind',
+    four: 'Four of a kind',
+    fullHouse: 'Full house',
+    straight: 'Straight',
+    three: 'Three of a kind',
+    twoPairs: 'Two pairs',
+    pair: 'A pair',
+    sum: 'Only the sum',
+  } satisfies Record<HandRank, string>,
+  win: 'The dice rarely lie. Enjoy the read, traveller.',
+  tieErl: 'A tie!… excuse me?! … well… Erl, ekhm… the rule of hospitality commend us, to deem this a victory of the guest… you, that is.',
+  tie: 'A tie! The dice can’t decide. Again, then.',
+  lose: 'You know what a druid says after a game of dice? It’s dicided, I win!',
+  rematch: 'The dice seem fond of you. Shall we play another round?',
   again: 'Again.',
   takeIt: 'Take it.',
-  wonItem: (name: string) => `The ${name} is yours.`,
+  prize: {
+    cv: 'The Scroll of Curriculum Vitae is yours.',
+    letter: 'The Scroll of Motivational Letter is yours.',
+  } satisfies Record<ItemId, string>,
+  doubleOrNothing: 'Double or nothing, traveller. The other scroll against the one in your satchel.',
   received: (name: string) => `${name} added to your satchel.`,
-  afterReceive: 'Read it somewhere dry. The ink runs when people cry at the good parts.',
   epilogue: [
-    "Two for two. Pim, we've been hustled.",
-    `When you're done reading, the signpost by the stairs knows how to reach ${FIRST_NAME}. Pim does not endorse visiting. Pim does not endorse anything.`,
+    'Both scrolls are now yours, traveller. I trust you will find a great use for the power stored within them.',
+    'When you are done here, the cat in the lower section of the city should know how to reach the scribe.',
+    'Farewell, traveller.',
   ],
+  farewell: 'Farewell.',
+  /** Each is spoken once, in order, then Haslin has nothing more to say. */
   barks: [
-    'Already lost the best things I own. The owl is not for sale.',
-    `${FIRST_NAME} once described a sunset so well the sun came back to listen.`,
-    'If Ghent sends a cart, tell them Pim travels free.',
+    'You already got the scrolls. No, I’m not betting Erl.',
+    'I have a one-on-one scry in 15 minutes, go and read your scrolls.',
   ],
-  druidLabel: 'Talk to Ossian the druid',
-  satchel: { title: 'Satchel', empty: 'Empty. For now.', open: 'Open satchel', weight: 'Weight' },
-  viewer: { close: 'Roll it up', closeLetter: 'Fold it away', pdf: 'Take a copy (PDF)' },
-  contact: {
-    title: 'The Signpost',
-    intro: `To reach ${NAME}:`,
-    email: 'By raven (email)',
-    linkedin: 'By the guild registry (LinkedIn)',
+  rewind: 'Rewind',
+  druidLabel: 'Talk to Haslin the druid',
+  satchel: { title: 'Satchel', empty: 'Empty. For now.', open: 'Open satchel', type: 'Scroll', weight: 'Weight' },
+  viewer: { close: 'Roll it up', closeLetter: 'Roll it up', pdf: 'Take a copy (PDF)' },
+  cat: { label: 'Pet the cat', meow: 'Mrrrow.' },
+  fastTravel: {
+    title: 'Fast Travel',
+    intro: 'Fast Travel to:',
+    postal: 'Postal Office',
+    guild: 'Guild Hall',
+    linkedin: 'LinkedIn',
     close: 'Farewell',
-    label: 'Read the signpost',
+  },
+  /** Legacy: removed in Task 6 with the signpost. */
+  contact: {
+    title: 'Fast Travel',
+    intro: 'Fast Travel to:',
+    email: 'Postal Office',
+    linkedin: 'Guild Hall (LinkedIn)',
+    close: 'Farewell',
+    label: 'Fast travel',
   },
   skip: 'Skip the tale →',
   reset: 'Begin anew',

@@ -14,9 +14,9 @@ export function DiceTray() {
   return (
     <div className="tray">
       <div className="tray-row">
-        <span className="tray-who">{copy.dice.ossian}</span>
-        {round.ossian.map((d, i) => (
-          <Die key={i} value={d} hidden={!round.seeOssian} label={round.seeOssian ? `Ossian's die: ${d}` : "Ossian's die, hidden"} />
+        <span className="tray-who">{copy.dice.haslin}</span>
+        {round.haslin.map((d, i) => (
+          <Die key={i} value={d} hidden label={copy.dice.hiddenDie} />
         ))}
       </div>
       <div className="tray-row">
@@ -35,8 +35,9 @@ export function DiceTray() {
       </div>
       <div className="tray-actions">
         <button type="button" className="px-btn" disabled={round.rerollsLeft === 0} onClick={reroll}>
-          {copy.dice.reroll(round.rerollsLeft)}
+          {copy.dice.reroll}
         </button>
+        <span className="tray-rerolls">{copy.dice.rerollsLeft(round.rerollsLeft)}</span>
         <button type="button" className="px-btn px-btn--gold" onClick={reveal}>
           {copy.dice.reveal}
         </button>
@@ -49,9 +50,9 @@ export function RoundSummary({ result }: { result: RoundResult }) {
   return (
     <div className="tray">
       <div className="tray-row">
-        <span className="tray-who">{copy.dice.ossian}</span>
-        {result.ossian.map((d, i) => <Die key={i} value={d} label={`Ossian's die: ${d}`} />)}
-        <span className="tray-hand">{copy.hands[result.ossianHand.rank]}</span>
+        <span className="tray-who">{copy.dice.haslin}</span>
+        {result.haslin.map((d, i) => <Die key={i} value={d} label={`${copy.dice.haslin}’s die: ${d}`} />)}
+        <span className="tray-hand">{copy.hands[result.haslinHand.rank]}</span>
       </div>
       <div className="tray-row">
         <span className="tray-who">{copy.dice.you}</span>

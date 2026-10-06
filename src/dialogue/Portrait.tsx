@@ -1,7 +1,7 @@
 import druidUrl from '../assets/druid.webp';
 import { FRAMES, FRAME_H, FRAME_W } from '../npc/druidSheet';
 
-/** Zoom into the first idle frame, centred on Ossian's face. Tune HEAD if the crop is off. */
+/** Zoom into the first idle frame, centred on Haslin's face. Tune HEAD if the crop is off. */
 const ZOOM = 1.5;
 const HEAD = { x: 77, y: 52 };
 const BOX = 96;

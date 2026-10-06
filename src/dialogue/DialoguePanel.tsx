@@ -1,9 +1,9 @@
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { useEffect, useRef, useState } from 'react';
-import { copy, items } from '../content/copy';
+import { copy } from '../content/copy';
 import { prefersReducedMotion } from '../engine/motion';
-import { ABILITIES, CHECKS, CHECK_ORDER, modifierFor } from '../game/checks';
+import { ABILITIES, CHECKS, CHECK_ORDER, ORIGIN_BONUS, modifierFor } from '../game/checks';
 import type { RoundResult } from '../game/round';
 import { remainingItems, useGame, type DialogueNode, type GameState } from '../game/store';
 import { useTypewriter } from '../ui/useTypewriter';
@@ -26,7 +26,7 @@ interface View {
   result?: RoundResult;
 }
 
-const CLOSABLE = new Set<DialogueNode['id']>(['origin', 'wager', 'about', 'check', 'epilogue']);
+const CLOSABLE = new Set<DialogueNode['id']>(['origin', 'wager', 'check', 'epilogue']);
 
 export function DialoguePanel() {
   const node = useGame((s) => s.node);
@@ -40,26 +40,18 @@ function buildView(node: DialogueNode, g: GameState): View {
     case 'origin':
       return {
         lines: [copy.originPrompt],
-        choices: ABILITIES.map((a) => ({ label: copy.origins[a].label, tag: `${a} +3`, onSelect: () => g.chooseOrigin(a) })),
+        choices: ABILITIES.map((a) => ({ label: copy.origins[a].label, tag: `${a} +${ORIGIN_BONUS}`, onSelect: () => g.chooseOrigin(a) })),
       };
-    case 'wager': {
-      const left = remainingItems(g.inventory);
+    case 'wager':
       return {
-        lines: [...(node.afterOrigin ? [copy.origins[node.afterOrigin].reply] : []), ...(left.length > 1 ? copy.wagerPrompt : [copy.wagerAgain])],
-        choices: [
-          ...left.map((i) => ({ label: copy.wagerChoice[i], onSelect: () => g.chooseWager(i) })),
-          { label: copy.about, onSelect: g.askAbout },
-          { label: copy.farewell, onSelect: g.closeDialogue },
-        ],
+        lines: [...(node.afterOrigin ? [copy.origins[node.afterOrigin].reply] : []), copy.wagerPrompt],
+        choices: remainingItems(g.inventory).map((i) => ({ label: copy.wagerChoice[i], onSelect: () => g.chooseWager(i) })),
       };
-    }
-    case 'about':
-      return { lines: copy.aboutReply, choices: [{ label: copy.back, onSelect: g.backToWager }] };
     case 'check':
       return {
-        lines: [copy.checkPrompt],
+        lines: [node.oneLeft ? copy.oneLeft : copy.checkPrompt],
         choices: [
-          ...CHECK_ORDER.filter((c) => !g.usedChecks.includes(c)).map((c) => {
+          ...CHECK_ORDER.map((c) => {
             const def = CHECKS[c];
             const mod = modifierFor(g.origin, def.ability);
             return {
@@ -69,50 +61,34 @@ function buildView(node: DialogueNode, g: GameState): View {
             };
           }),
           { label: copy.justRoll, onSelect: g.justRoll },
-          { label: copy.farewell, onSelect: g.closeDialogue },
         ],
       };
-    case 'rolling': {
-      const lines =
-        node.roll === 20
-          ? []
-          : [
-              ...(node.roll === 1 ? [copy.nat1] : []),
-              node.success ? copy.checks[node.check].success : copy.checks[node.check].fail,
-              ...(node.success ? [`(${copy.effects[node.check]})`] : []),
-            ];
+    case 'rolling':
       return {
-        lines,
+        lines: [
+          ...(node.roll === 1 ? [copy.nat1] : []),
+          node.success ? copy.checks[node.check].success : copy.checks[node.check].fail,
+          ...(node.success ? [`(${copy.effects[node.check]})`] : []),
+        ],
         d20: { roll: node.roll, modifier: node.modifier, dc: node.dc, success: node.success },
         choices: [{ label: copy.rollContinue, onSelect: g.continueAfterRoll }],
-      };
-    }
-    case 'nat20':
-      return {
-        lines: [...(node.items.length > 1 ? copy.nat20.both : copy.nat20.last), copy.afterReceive],
-        choices: [{ label: copy.nat20.take, onSelect: g.continueDialogue }],
       };
     case 'dice':
       return { lines: [copy.dice.holdHint], choices: [], dice: true };
     case 'roundWon':
       return {
-        lines: node.result.pim
-          ? [copy.pim, copy.wonItem(items[node.wager].name), copy.afterReceive]
-          : [copy.win, ...(node.result.playerHand.rank === 'triple' ? [copy.triple] : []), copy.wonItem(items[node.wager].name), copy.afterReceive],
+        lines: [node.result.erl ? copy.tieErl : copy.win, copy.prize[node.wager]],
         result: node.result,
         choices: [{ label: copy.takeIt, onSelect: g.continueDialogue }],
       };
+    case 'roundTied':
+      return { lines: [copy.tie], result: node.result, choices: [{ label: copy.again, onSelect: g.continueDialogue }] };
     case 'roundLost':
-      return {
-        lines: [copy.lose, copy.rematch],
-        result: node.result,
-        choices: [
-          { label: copy.again, onSelect: g.continueDialogue },
-          { label: copy.farewell, onSelect: g.closeDialogue },
-        ],
-      };
+      return { lines: [copy.lose, copy.rematch], result: node.result, choices: [{ label: copy.again, onSelect: g.continueDialogue }] };
+    case 'double':
+      return { lines: [copy.doubleOrNothing], choices: [{ label: copy.again, onSelect: g.acceptDouble }] };
     case 'epilogue':
-      return { lines: copy.epilogue, choices: [{ label: copy.farewellFinal, onSelect: g.continueDialogue }] };
+      return { lines: copy.epilogue, choices: [{ label: copy.farewell, onSelect: g.continueDialogue }] };
   }
 }
 
@@ -135,7 +111,7 @@ function DialogueView({ node }: { node: DialogueNode }) {
   const view = buildView(node, g);
   const [settled, setSettled] = useState(!view.d20);
   const panelRef = useRef<HTMLElement>(null);
-  const text = view.lines.join('\n');
+  const text = view.lines.join('\n\n');
 
   useGSAP(
     () => {
@@ -163,10 +139,18 @@ function DialogueView({ node }: { node: DialogueNode }) {
   });
 
   return (
-    <section ref={panelRef} className="dialogue px-panel" aria-label="Dialogue with Ossian">
+    <section ref={panelRef} className="dialogue px-panel" aria-label={`Dialogue with ${copy.speaker}`}>
       <Portrait />
       <div className="dialogue-main">
-        <h2 className="dialogue-speaker">Ossian</h2>
+        <div className="dialogue-head">
+          <h2 className="dialogue-speaker">{copy.speaker}</h2>
+          {g.history.length > 0 && (
+            <button type="button" className="px-btn px-btn--small" onClick={g.rewind}>
+              <span aria-hidden="true">⟲ </span>
+              {copy.rewind}
+            </button>
+          )}
+        </div>
         {view.d20 && <D20 {...view.d20} onSettled={() => setSettled(true)} />}
         {settled && text && <TypedLines text={text} />}
         {view.result && <RoundSummary result={view.result} />}
