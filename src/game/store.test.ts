@@ -29,6 +29,11 @@ describe('druid scene', () => {
     expect(selectDruidHold({ ...g(), druid: 'patrolling', node: null })).toBe(false);
     expect(selectDruidHold({ ...g(), druid: 'patrolling', node: { id: 'origin' } })).toBe(true);
   });
+
+  it('does not hold the druid during his entrance unless he is talking', () => {
+    expect(selectDruidHold({ ...g(), druid: 'entering', node: null })).toBe(false);
+    expect(selectDruidHold({ ...g(), druid: 'entering', node: { id: 'origin' } })).toBe(true);
+  });
 });
 
 describe('dialogue flow', () => {
@@ -36,6 +41,14 @@ describe('dialogue flow', () => {
     useGame.setState({ druid: 'offstage' });
     g().talk();
     expect(g().node).toBeNull();
+  });
+
+  it('clicking him mid-entrance skips the greeting and opens the dialogue', () => {
+    useGame.setState({ druid: 'entering' });
+    g().talk();
+    expect(g()).toMatchObject({ druid: 'waiting', introSeen: true, node: { id: 'origin' } });
+    g().druidArrived();
+    expect(g().druid).toBe('waiting');
   });
 
   it('asks for an origin first, then the wager', () => {

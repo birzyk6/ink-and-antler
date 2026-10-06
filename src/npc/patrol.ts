@@ -29,7 +29,7 @@ export function createStandingNpc(): NpcState {
 }
 
 export function setHold(s: NpcState, hold: boolean): NpcState {
-  if (hold && (s.mode === 'walk' || s.mode === 'idle')) return { ...s, mode: 'hold' };
+  if (hold && (s.mode === 'walk' || s.mode === 'idle' || s.mode === 'enter')) return { ...s, mode: 'hold' };
   if (!hold && s.mode === 'hold') return { ...s, mode: 'idle', idleLeftMs: 1500 };
   return s;
 }

@@ -114,7 +114,7 @@ export function remainingItems(inventory: readonly ItemId[]): ItemId[] {
 }
 
 export function selectDruidHold(s: Pick<GameState, 'node' | 'druid'>): boolean {
-  return s.node !== null || s.druid === 'entering' || s.druid === 'greeting' || s.druid === 'waiting';
+  return s.node !== null || s.druid === 'greeting' || s.druid === 'waiting';
 }
 
 /** localStorage can throw (private mode, blocked site data); the game must still run. */
@@ -179,7 +179,7 @@ export const useGame = create<GameState>()(
 
         talk: () => {
           const s = get();
-          if (s.node || s.druid === 'offstage' || s.druid === 'entering') return;
+          if (s.node || s.druid === 'offstage') return;
           const left = remainingItems(s.inventory);
           if (left.length === 0) {
             const bark = copy.barks[s.barkIndex];

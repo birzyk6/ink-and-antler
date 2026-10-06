@@ -35,11 +35,12 @@ describe('helpers', () => {
     expect(Math.abs(pickTarget(CENTER_X, still) - CENTER_X)).toBeGreaterThanOrEqual(MIN_STEP);
   });
 
-  it('setHold freezes walkers and releases to idle, but never interrupts the entrance', () => {
+  it('setHold freezes walkers and the entrance, and releases to idle', () => {
     const walking = { ...createStandingNpc(), mode: 'walk' as const };
     expect(setHold(walking, true).mode).toBe('hold');
     expect(setHold({ ...walking, mode: 'hold' }, false)).toMatchObject({ mode: 'idle', idleLeftMs: 1500 });
-    expect(setHold(createEnteringNpc(), true).mode).toBe('enter');
+    expect(setHold(createEnteringNpc(), true).mode).toBe('hold');
+    expect(setHold(createEnteringNpc(), false).mode).toBe('enter');
   });
 
   it('frameFor uses walk frames while moving and idle frames otherwise', () => {
