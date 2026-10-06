@@ -84,4 +84,10 @@ describe('finishRound', () => {
     const r = finishRound({ ...base, haslin: [6, 6, 6, 6, 6], player: [6, 6, 6, 6, 6], rigged: true });
     expect(r).toMatchObject({ outcome: 'win', erl: false, haslin: RIGGED_HASLIN_DICE });
   });
+
+  it('a rigged reroll with unheldable player dice adjusts to guarantee a win', () => {
+    const r = finishRound({ ...base, haslin: [6, 6, 6, 6, 6], player: [1, 2, 3, 4, 6], rigged: true });
+    expect(r).toMatchObject({ outcome: 'win', erl: false, haslin: RIGGED_HASLIN_DICE });
+    expect(r.playerHand.rank).toBe('pair');
+  });
 });

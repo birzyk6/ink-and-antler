@@ -102,6 +102,12 @@ export function finishRound(s: RoundState): RoundResult {
   if (s.rigged && outcome !== 'win') {
     haslin = [...RIGGED_HASLIN_DICE];
     outcome = compareHands(player, haslin);
+    if (outcome !== 'win') {
+      // Adjust player to guarantee a win: make a pair
+      const min = Math.min(...player);
+      player[lowestIndex(player)] = Math.min(...player.filter(d => d > min));
+      outcome = compareHands(player, haslin);
+    }
   }
   const erl = outcome === 'tie' && s.tiesToPlayer;
   return { outcome: erl ? 'win' : outcome, erl, player, haslin, playerHand: evaluateHand(player), haslinHand: evaluateHand(haslin) };

@@ -73,6 +73,7 @@ describe('haslinHolds', () => {
     expect(haslinHolds([5, 2, 5, 2, 1])).toEqual([true, true, true, true, false]);
     expect(haslinHolds([3, 1, 3, 5, 6])).toEqual([true, false, true, false, false]);
     expect(haslinHolds([1, 2, 3, 4, 6])).toEqual([false, false, false, false, false]);
+    expect(haslinHolds([4, 1, 4, 2, 4])).toEqual([true, false, true, false, true]);
   });
 });
 
