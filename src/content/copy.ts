@@ -11,8 +11,6 @@ export const SIGN_SUBTITLE = `Home of ${NAME}, Writer`;
 export const CONTACT = { email: 'kulijewiczmichal@gmail.com', linkedin: 'https://www.linkedin.com/in/varmblixt' };
 /** Files in /public. */
 export const PDF: Record<ItemId, string> = { cv: '/michal-kulijewicz-cv.pdf', letter: '/michal-kulijewicz-letter.pdf' };
-/** Legacy: removed in Task 5 once the viewer uses PDF. */
-export const CV_PDF_URL: string | null = null;
 
 export const items: Record<ItemId, { name: string; rarity: 'Legendary' | 'Rare'; flavour: string; weight: number }> = {
   cv: { name: 'Scroll of Curriculum Vitae', rarity: 'Legendary', flavour: 'Contains one (1) writer. Handle with interest.', weight: 0.1 },
@@ -126,7 +124,7 @@ export const copy = {
   rewind: 'Rewind',
   druidLabel: 'Talk to Haslin the druid',
   satchel: { title: 'Satchel', empty: 'Empty. For now.', open: 'Open satchel', type: 'Scroll', weight: 'Weight' },
-  viewer: { close: 'Roll it up', closeLetter: 'Roll it up', pdf: 'Take a copy (PDF)' },
+  viewer: { close: 'Roll it up', pdf: 'Take a copy (PDF)' },
   cat: { label: 'Pet the cat', meow: 'Mrrrow.' },
   fastTravel: {
     title: 'Fast Travel',

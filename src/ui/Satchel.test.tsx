@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { copy, items } from '../content/copy';
+import { PDF, copy, items } from '../content/copy';
 import { CV, MOTIVATION_LETTER } from '../content/documents';
 import { INITIAL, useGame } from '../game/store';
 import { DocumentViewer } from './DocumentViewer';
@@ -27,12 +27,14 @@ describe('Satchel', () => {
     await user.click(screen.getByRole('button', { name: items.cv.name }));
     expect(screen.getByRole('dialog', { name: items.cv.name })).toBeInTheDocument();
     expect(screen.getByText(CV.title)).toBeInTheDocument();
+    expect(screen.getByText(/Games Taxonomy & Product Operations Analyst/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: copy.viewer.pdf })).toHaveAttribute('href', PDF.cv);
     expect(useGame.getState().opened).toEqual(['cv']);
     await user.click(screen.getByRole('button', { name: copy.viewer.close }));
     expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
-  it('opens the letter (seal skipped under reduced motion)', async () => {
+  it('opens the letter as a scroll (seal skipped under reduced motion)', async () => {
     const user = userEvent.setup();
     useGame.setState({ inventory: ['letter'], satchelOpen: true });
     render(
@@ -42,7 +44,11 @@ describe('Satchel', () => {
       </>,
     );
     await user.click(screen.getByRole('button', { name: items.letter.name }));
-    expect(screen.getByText(MOTIVATION_LETTER.salutation)).toBeInTheDocument();
+    expect(screen.getByText(MOTIVATION_LETTER.opening[0])).toBeInTheDocument();
+    expect(screen.getByText(/Tir-Cendelius/)).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: copy.viewer.pdf })).toHaveAttribute('href', PDF.letter);
+    await user.click(screen.getByRole('button', { name: copy.viewer.close }));
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   });
 
   it('shows a BG3-style card: name, "Scroll · rarity", flavour and weight', async () => {
