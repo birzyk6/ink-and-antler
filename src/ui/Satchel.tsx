@@ -3,7 +3,8 @@ import { copy, items } from '../content/copy';
 import type { ItemId } from '../game/items';
 import { useGame } from '../game/store';
 import { PixelArt } from '../pixel/PixelArt';
-import { ICONS, ITEM, LEATHER, SATCHEL } from '../pixel/sprites';
+import { LEATHER, SATCHEL } from '../pixel/sprites';
+import { ScrollIcon } from './ScrollIcon';
 import './ui.css';
 
 const SLOT_COUNT = 12;
@@ -43,33 +44,43 @@ export function Satchel() {
                 <button
                   key={i}
                   type="button"
-                  className="slot slot--full"
+                  className={`slot slot--full rarity-${items[id].rarity.toLowerCase()}`}
                   aria-label={items[id].name}
                   onMouseEnter={() => setHovered(id)}
                   onFocus={() => setHovered(id)}
                   onClick={() => viewItem(id)}
                 >
-                  <PixelArt rows={ICONS[id]} palette={ITEM} scale={3} />
+                  <ScrollIcon id={id} />
                 </button>
               ) : (
                 <div key={i} className="slot" />
               );
             })}
           </div>
-          {card ? <ItemCard id={card} /> : <p className="satchel-empty">{copy.satchel.empty}</p>}
+          <ItemCard id={card} />
         </aside>
       )}
     </>
   );
 }
 
-function ItemCard({ id }: { id: ItemId }) {
+function ItemCard({ id }: { id: ItemId | null }) {
+  if (!id) {
+    return (
+      <div className="item-card item-card--empty">
+        <p className="satchel-empty">{copy.satchel.empty}</p>
+      </div>
+    );
+  }
   const it = items[id];
   return (
     <div className={`item-card rarity-${it.rarity.toLowerCase()}`}>
-      <h3>{it.name}</h3>
-      <p className="item-rarity">{it.rarity}</p>
-      <p className="item-flavour">“{it.flavour}”</p>
+      <h3 className="item-name">{it.name}</h3>
+      <p className="item-type">
+        {copy.satchel.type} · {it.rarity}
+      </p>
+      <hr className="item-rule" />
+      <p className="item-flavour">"{it.flavour}"</p>
       <p className="item-weight">
         {copy.satchel.weight} {it.weight}
       </p>

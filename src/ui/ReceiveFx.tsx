@@ -4,8 +4,7 @@ import { useEffect, useRef } from 'react';
 import { copy, items } from '../content/copy';
 import { prefersReducedMotion } from '../engine/motion';
 import { useGame } from '../game/store';
-import { PixelArt } from '../pixel/PixelArt';
-import { ICONS, ITEM } from '../pixel/sprites';
+import { ScrollIcon } from './ScrollIcon';
 import './ui.css';
 
 const RECEIVE_MS = 2200;
@@ -52,7 +51,7 @@ export function ReceiveFx() {
   return (
     <>
       <div key={`fly-${id}`} ref={flyRef} className="fly" aria-hidden="true">
-        <PixelArt rows={ICONS[id]} palette={ITEM} scale={4} />
+        <ScrollIcon id={id} size={64} />
       </div>
       <div key={`toast-${id}`} ref={toastRef} className="toast px-parchment" role="status">
         {copy.received(items[id].name)}

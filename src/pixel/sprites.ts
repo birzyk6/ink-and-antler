@@ -1,4 +1,3 @@
-import type { ItemId } from '../game/items';
 import { P } from './palette';
 import type { Palette } from './pixelMap';
 
@@ -7,7 +6,6 @@ export const IRON: Palette = { o: P.outline, I: P.ironLight, i: P.iron };
 export const IRON_WOOD: Palette = { o: P.outline, I: P.ironLight, W: P.wood };
 export const FLAME: Palette = { a: P.flame1, b: P.flame2, c: P.flame3 };
 export const LEATHER: Palette = { o: P.outline, D: P.leatherDark, L: P.leather, l: P.leatherLight, G: P.gold };
-export const ITEM: Palette = { o: P.outline, W: P.woodDark, P: P.parchment, p: P.parchmentDark, R: P.red, r: P.redDark };
 export const SEAL_PALETTE: Palette = { o: P.redDark, R: P.red, r: P.redDark, G: P.gold };
 export const GOLD: Palette = { o: P.outline, G: P.gold, g: P.goldDark };
 export const CURSOR_PALETTE: Palette = { o: P.outline, P: P.parchment };
@@ -30,36 +28,6 @@ export const SATCHEL = [
   'oDDLLLLLLLLLLDDo',
   '.oDDDDDDDDDDDDo.',
   '..oooooooooooo..',
-];
-
-export const SCROLL = [
-  '..oooooooooooo..',
-  '.oWPPPPPPPPPPWo.',
-  '.oWPPPPPPPPPPWo.',
-  '.oWppppRRppppWo.',
-  '.oWPPPPRRPPPPWo.',
-  '.oWPPPPRRPPPPWo.',
-  '.oWppppRRppppWo.',
-  '.oWPPPPPPPPPPWo.',
-  '.oWPPPPPPPPPPWo.',
-  '..oooooooooooo..',
-  '......oRRo......',
-  '.....oRo.oRo....',
-];
-
-export const LETTER = [
-  'oooooooooooooooo',
-  'oPoPPPPPPPPPPoPo',
-  'oPPoPPPPPPPPoPPo',
-  'oPPPoPPPPPPoPPPo',
-  'oPPPPoPPPPoPPPPo',
-  'oPPPPPoRRoPPPPPo',
-  'oPPPPPRRRRPPPPPo',
-  'oPPPPPRrrRPPPPPo',
-  'oPPPPPPRRPPPPPPo',
-  'oPPPPPPPPPPPPPPo',
-  'oppppppppppppppo',
-  'oooooooooooooooo',
 ];
 
 export const SEAL = [
@@ -184,12 +152,8 @@ export function chainRows(links: number): string[] {
   return Array.from({ length: links }, () => CHAIN_LINK).flat();
 }
 
-export const ICONS: Record<ItemId, string[]> = { cv: SCROLL, letter: LETTER };
-
 export const SPRITE_REGISTRY: { name: string; rows: string[]; palette: Palette }[] = [
   { name: 'satchel', rows: SATCHEL, palette: LEATHER },
-  { name: 'scroll', rows: SCROLL, palette: ITEM },
-  { name: 'letter', rows: LETTER, palette: ITEM },
   { name: 'seal', rows: SEAL, palette: SEAL_PALETTE },
   { name: 'marker', rows: MARKER, palette: GOLD },
   { name: 'cursor', rows: CURSOR, palette: CURSOR_PALETTE },

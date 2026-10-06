@@ -44,4 +44,23 @@ describe('Satchel', () => {
     await user.click(screen.getByRole('button', { name: items.letter.name }));
     expect(screen.getByText(MOTIVATION_LETTER.salutation)).toBeInTheDocument();
   });
+
+  it('shows a BG3-style card: name, "Scroll · rarity", flavour and weight', async () => {
+    const user = userEvent.setup();
+    useGame.setState({ inventory: ['cv', 'letter'], satchelOpen: true });
+    const { container } = render(<Satchel />);
+    expect(container.querySelectorAll('.slot--full svg.scroll-icon')).toHaveLength(2);
+    expect(screen.getByRole('heading', { name: items.cv.name })).toBeInTheDocument();
+    expect(screen.getByText(`${copy.satchel.type} · Legendary`)).toBeInTheDocument();
+    await user.hover(screen.getByRole('button', { name: items.letter.name }));
+    expect(screen.getByRole('heading', { name: items.letter.name })).toBeInTheDocument();
+    expect(screen.getByText(`${copy.satchel.type} · Rare`)).toBeInTheDocument();
+    expect(screen.getByText(`"${items.letter.flavour}"`)).toBeInTheDocument();
+  });
+
+  it('keeps the card box when the satchel is empty, so the panel never resizes', () => {
+    useGame.setState({ satchelOpen: true });
+    const { container } = render(<Satchel />);
+    expect(container.querySelector('.item-card')).toHaveTextContent(copy.satchel.empty);
+  });
 });
