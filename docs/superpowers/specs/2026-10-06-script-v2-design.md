@@ -61,7 +61,7 @@ Source: Michał's script v2 + rule changes (2026-10-06). Real CV and motivationa
 ## 5. Cat replaces signpost
 
 - Signpost sprite, hotspot and `SIGNPOST` layout constant removed.
-- Cat hotspot over the painted cat (world ≈ x 340, feet y 965). Click: hop, "Mrrrow." bubble, a floating heart. Keyboard accessible.
+- Cat hotspot over the painted cat (world ≈ x 340, feet y 965). Click: "Mrrrow." bubble and a floating heart (the cat is painted into the background, so it cannot hop). Keyboard accessible.
 - After both scrolls are won and before the fast-travel menu has been opened once, the cat shows the `!` marker. After both scrolls, clicking the cat also opens **Fast Travel**:
   - Postal Office (kulijewiczmichal@gmail.com) → `mailto:`
   - Guild Hall (LinkedIn) — the word "LinkedIn" is the link to https://www.linkedin.com/in/varmblixt
