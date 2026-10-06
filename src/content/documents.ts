@@ -12,10 +12,10 @@ export interface DocSection {
 
 const plain = (titles: string[]): DocEntry[] => titles.map((title) => ({ title }));
 
-/** From "CV_Larian - Michal Kulijewicz.pdf". Keep wording verbatim. */
+/** From "CV_Larian - Michal Kulijewicz (2).pdf". Keep wording verbatim; sections reordered to lead with experience. */
 export const CV: { title: string; subtitle: string[]; sections: DocSection[]; closing: string } = {
   title: NAME,
-  subtitle: ['Poland, Kraków', '+48 694 482 078', 'kulijewiczmichal@gmail.com'],
+  subtitle: ['Poland', '+48 694 482 078', 'kulijewiczmichal@gmail.com'],
   sections: [
     {
       heading: 'Experience',
