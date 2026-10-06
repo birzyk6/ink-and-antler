@@ -61,7 +61,7 @@ describe('Satchel', () => {
     await user.hover(screen.getByRole('button', { name: items.letter.name }));
     expect(screen.getByRole('heading', { name: items.letter.name })).toBeInTheDocument();
     expect(screen.getByText(`${copy.satchel.type} · Rare`)).toBeInTheDocument();
-    expect(screen.getByText(`"${items.letter.flavour}"`)).toBeInTheDocument();
+    expect(screen.getByText(`“${items.letter.flavour}”`)).toBeInTheDocument();
   });
 
   it('keeps the card box when the satchel is empty, so the panel never resizes', () => {

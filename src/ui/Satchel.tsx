@@ -80,7 +80,7 @@ function ItemCard({ id }: { id: ItemId | null }) {
         {copy.satchel.type} · {it.rarity}
       </p>
       <hr className="item-rule" />
-      <p className="item-flavour">"{it.flavour}"</p>
+      <p className="item-flavour">“{it.flavour}”</p>
       <p className="item-weight">
         {copy.satchel.weight} {it.weight}
       </p>

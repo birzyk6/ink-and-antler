@@ -36,7 +36,7 @@ export const CV: { title: string; subtitle: string[]; sections: DocSection[]; cl
         {
           title: '04.2024 - present - Newzoo - Games Taxonomy & Product Operations Analyst',
           lines: [
-            'Game analysis, taking care of Newzoo\'s internal database, writing articles, product management, financial analysis, research and consulting, preparing presentations, and public presentation of said presentations, market forecasting.',
+            'Game analysis, taking care of Newzoo’s internal database, writing articles, product management, financial analysis, research and consulting, preparing presentations, and public presentation of said presentations, market forecasting.',
             'And above all, working with an amazing team of industry professionals!',
           ],
         },
@@ -58,7 +58,7 @@ export const CV: { title: string; subtitle: string[]; sections: DocSection[]; cl
         'Writing books and scripts',
         'Game design',
         'Martial arts and winter sports',
-        'Gaming - especially RPG\'s!',
+        'Gaming - especially RPG’s!',
       ]),
     },
   ],
@@ -70,8 +70,8 @@ export const MOTIVATION_LETTER = {
   opening: ['Once upon a time…', 'in a city of kings and dragons (allegedly), a man had a dream.', 'A dream of grandeur.'],
   poem: [
     [
-      '"On his nightstand lies a quill, and even though no elven blood courses his veins,',
-      'he\'s not afraid to spill his own, to feed the quill and pray to God.',
+      '“On his nightstand lies a quill, and even though no elven blood courses his veins,',
+      "he's not afraid to spill his own, to feed the quill and pray to God.",
       'To Tir-Cendelius. The Poet.',
       'Though for a mere man an ill omen,',
       'thoughts of more muddle acumen.',
@@ -90,10 +90,10 @@ export const MOTIVATION_LETTER = {
       'a man was not made to rule over life.',
       'And yet he tries.',
     ],
-    ['And dreams turn to nightmares. Yet grander."'],
+    ['And dreams turn to nightmares. Yet grander.”'],
   ],
   closing: [
-    'I might not be down for a blood sacrifice, but I\'d love to write for the countless fans of Larian\'s work all around the world.',
+    'I might not be down for a blood sacrifice, but I’d love to write for the countless fans of Larian’s work all around the world.',
     'It would be a dream come true, to use my penmanship, creativity and passion to the benefit of the next great game of one of my favourite studios in the whole wide world.',
   ],
   signoff: 'Warm regards,',
