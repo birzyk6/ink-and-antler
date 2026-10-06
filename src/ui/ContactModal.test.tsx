@@ -1,4 +1,5 @@
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it } from 'vitest';
 import { CONTACT, copy } from '../content/copy';
 import { INITIAL, useGame } from '../game/store';
@@ -16,5 +17,13 @@ describe('ContactModal (fast travel)', () => {
     const linkedin = screen.getByRole('link', { name: 'LinkedIn' });
     expect(linkedin).toHaveAttribute('href', 'https://www.linkedin.com/in/varmblixt');
     expect(linkedin).toHaveAttribute('target', '_blank');
+  });
+
+  it('copies the email address on click and says so', async () => {
+    const user = userEvent.setup();
+    render(<ContactModal />);
+    await user.click(screen.getByRole('link', { name: CONTACT.email }));
+    expect(await navigator.clipboard.readText()).toBe(CONTACT.email);
+    expect(screen.getByRole('status')).toHaveTextContent(copy.fastTravel.copied);
   });
 });

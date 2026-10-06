@@ -1,6 +1,46 @@
+import { useEffect, useState, type MouseEvent } from 'react';
 import { CONTACT, copy } from '../content/copy';
 import { useGame } from '../game/store';
 import './chrome.css';
+
+const COPIED_MS = 2400;
+
+/**
+ * The address copies to the clipboard on click, with a short "copied" note. It stays a mailto
+ * link, so middle-click works, and if the clipboard is unavailable the click opens the mail app.
+ */
+function EmailLink() {
+  const [copied, setCopied] = useState(0);
+  useEffect(() => {
+    if (!copied) return;
+    const t = window.setTimeout(() => setCopied(0), COPIED_MS);
+    return () => window.clearTimeout(t);
+  }, [copied]);
+  const onClick = async (e: MouseEvent<HTMLAnchorElement>) => {
+    if (!navigator.clipboard) return;
+    e.preventDefault();
+    try {
+      await navigator.clipboard.writeText(CONTACT.email);
+      setCopied((n) => n + 1);
+    } catch {
+      window.location.href = `mailto:${CONTACT.email}`;
+    }
+  };
+  return (
+    <span className="email-copy">
+      <a href={`mailto:${CONTACT.email}`} title={copy.fastTravel.copyHint} onClick={onClick}>
+        {CONTACT.email}
+      </a>
+      <span className="email-copied" role="status">
+        {copied > 0 && (
+          <span key={copied} className="email-copied-note">
+            {copy.fastTravel.copied}
+          </span>
+        )}
+      </span>
+    </span>
+  );
+}
 
 export function ContactModal() {
   const isOpen = useGame((s) => s.contactOpen);
@@ -14,7 +54,7 @@ export function ContactModal() {
         <p>{copy.fastTravel.intro}</p>
         <ul className="fast-travel">
           <li>
-            <span className="fast-travel-place">{copy.fastTravel.postal}</span> (<a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>)
+            <span className="fast-travel-place">{copy.fastTravel.postal}</span> (<EmailLink />)
           </li>
           <li>
             <span className="fast-travel-place">{copy.fastTravel.guild}</span> (

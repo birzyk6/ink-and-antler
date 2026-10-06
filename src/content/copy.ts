@@ -147,6 +147,8 @@ export const copy = {
     postal: 'Postal Office',
     guild: 'Guild Hall',
     linkedin: 'LinkedIn',
+    copied: 'Email copied to your clipboard.',
+    copyHint: 'Click to copy',
     close: 'Farewell',
   },
   skip: 'Skip the tale →',
