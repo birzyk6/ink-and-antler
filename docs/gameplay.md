@@ -16,11 +16,11 @@ scene. No page scroll, no parallax, no camera moves. Things move *inside* the sc
  │        clouds drift slowly  ·  castle          │
  │                                                │
  │ forge · bakery · cloth · veg · house           │  UPPER STREET (y≈600/1080)
- │ ════════ Ossian the Druid patrols ════════     │                        [🎒]
+ │ ════════ Haslin the Druid patrols ════════     │                        [🎒]
  │                                                │  satchel, right edge
  │ fish · potions · veg · lanterns · pottery      │  LOWER STREET (y≈950/1080)
  │           (set dressing only in POC)           │
- │              [ stairs · signpost ]             │  contact: email / PDF
+ │  [cat] (fast travel)                           │  contact: email / LinkedIn
  └───────────────────────────────────────────────┘
 ```
 
@@ -28,10 +28,10 @@ scene. No page scroll, no parallax, no camera moves. Things move *inside* the sc
   viewport (a little cropped at the edges, no bars). Important things stay in a central
   "safe area" so they are never cropped.
 - All positions are in world pixels, so NPCs and hotspots line up at any screen size.
-- Clickable hotspots: Ossian, the signpost (contact),
-  the cat (easter-egg bark), the title sign (small swing).
+- Clickable hotspots: Haslin, the cat (pet it; after both scrolls it offers fast travel to contact),
+  the title sign (small swing).
 
-## NPC behaviour (Ossian)
+## NPC behaviour (Haslin)
 
 State machine:
 
@@ -69,7 +69,7 @@ ENTER (walk from left edge → centre)
 
 ## Persistence
 - Inventory + dialogue-seen flags stored in `localStorage` (wrapped in try/catch).
-- Returning visitor: Ossian is already patrolling, scroll already in satchel, no intro replay.
+- Returning visitor: Haslin is already patrolling, scroll already in satchel, no intro replay.
 - "Reset tale" option in the sound/settings corner.
 
 ## Ambient animation list (cheap wins)
@@ -95,7 +95,7 @@ branch, a nod to the druid).
 3. The warm light spreads onto the board and the gold letters catch it (a shimmer
    sweeps once).
 4. The sign swings once and settles. Chains creak (if sound is on).
-5. The dusk tint lifts to day, and Ossian enters.
+5. The dusk tint lifts to day, and Haslin enters.
 
 Idle: the torches flicker, and the sign sways slightly every ~8s. Click it: it swings and
 gives a bark ("Careful. That sign has been hanging longer than most kings.").
@@ -109,7 +109,7 @@ drawn into the sprite and is also real DOM text (visually hidden, as the page `<
 SEO and screen readers. Check that the `ł` glyph renders in both fonts. If a font we like has no `ł`, write **Michal** with a plain `l` in that font rather than change fonts. Keep all name strings in `/src/content` so the swap is one line.
 
 ## Accessibility & recruiter safety
-- `Skip the tale` + contact signpost always reachable; real PDF CV link.
+- `Skip the tale` + the cat's fast travel; real PDF downloads for both scrolls.
 - All dialogue is real DOM text (selectable, screen-reader friendly), not baked into images.
 - `prefers-reduced-motion`: instant text, no d20 tumble, no sign swing.
 - Keyboard: Tab to NPC, Enter to talk, 1–4 choices, `I` satchel, Esc closes.
@@ -117,7 +117,7 @@ SEO and screen readers. Check that the `ł` glyph renders in both fonts. If a fo
   with a "read the scroll anyway" link to the CV.
 
 ## v1 POC scope
-In: full town scene, tavern sign + torch intro, Ossian (enter / greet / origin / wager / checks /
-Lucky Twenty / knucklebones / patrol), satchel, inventory, scroll + letter viewers with
-placeholder text, signpost contact, skip button, localStorage.
+In: full town scene, tavern sign + torch intro, Haslin (enter / greet / origin / wager / checks /
+rigged nat 20 / five-dice game / patrol), satchel, inventory, scroll + letter viewers with
+real CV and letter, cat fast travel, skip button, localStorage.
 Out (later): extra NPCs, sound, quest log, lower-street ambient, real handwritten CV art.
