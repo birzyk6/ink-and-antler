@@ -103,9 +103,9 @@ export function finishRound(s: RoundState): RoundResult {
     haslin = [...RIGGED_HASLIN_DICE];
     outcome = compareHands(player, haslin);
     if (outcome !== 'win') {
-      // Adjust player to guarantee a win: make a pair
+      // Only the lowest bust can still tie the lowest bust: turn it into a pair so a rigged game always wins.
       const min = Math.min(...player);
-      player[lowestIndex(player)] = Math.min(...player.filter(d => d > min));
+      player[lowestIndex(player)] = Math.min(...player.filter((d) => d > min));
       outcome = compareHands(player, haslin);
     }
   }

@@ -43,6 +43,15 @@
   font-family: var(--font-hand); color: #d9c9a8;
 }
 .item-card--empty { display: grid; place-items: center; }
+/* Short screens: compact slots so the card keeps >= 172px (375px tall: 173px, 430px tall: 228px). */
+@media (max-height: 560px) {
+  .satchel-panel { height: min(500px, calc(100vh - 8px)); padding: 6px 20px; }
+  .satchel-panel h2 { margin-bottom: 4px; font-size: 20px; line-height: 1; }
+  .slots { grid-template-columns: repeat(4, 44px); margin-bottom: 6px; }
+  .slot { width: 44px; height: 44px; }
+  .slot .scroll-icon { width: 36px; height: 36px; }
+  .item-card { overflow-y: auto; }
+}
 .satchel-empty { margin: 0; opacity: 0.8; }
 .item-name { margin: 0; font-size: 22px; font-weight: normal; line-height: 1.15; }
 .rarity-legendary .item-name { color: #e8a33c; }
