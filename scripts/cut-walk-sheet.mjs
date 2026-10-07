@@ -1,7 +1,7 @@
 // Cuts a generated walk cycle on magenta into druid_walk1..8.png, scaled and aligned to
 // druid_idle1.png so the frames swap without jumping. Takes either one 4×2 sheet, or two
 // 4-frame strips (right leg leading, then left leg leading) that get stacked into one.
-// Usage: node scripts/cut-walk-sheet.mjs [sheet | stripA stripB] — then `npm run assets`.
+// Usage: node scripts/cut-walk-sheet.mjs [sheet | stripA stripB], then `npm run assets`.
 import sharp from 'sharp';
 
 const INPUTS = process.argv.length > 2 ? process.argv.slice(2) : ['sprites/gemini/sheet.jpg'];

@@ -1,4 +1,4 @@
-/** Layout of src/assets/druid.webp — keep in sync with scripts/build-assets.mjs. */
+/** Layout of src/assets/druid.webp; keep in sync with scripts/build-assets.mjs. */
 export const FRAME_W = 162;
 export const FRAME_H = 224;
 export const FRAMES = 6;

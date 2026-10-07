@@ -1,4 +1,4 @@
-# Story — "The Ink & Antler" (script v2)
+# Story - "The Ink & Antler" (script v2)
 
 > Portfolio of **Michał Kulijewicz**, applying for a **Writer** position at Larian Studios.
 > The site itself is the writing sample. All player-facing strings live in `src/content/copy.ts`.
@@ -8,13 +8,13 @@
 - **Erl**, his owl, the senior partner.
 - **TRAVELLER**, the player.
 
-## Scene 1 — The Greeting
+## Scene 1 - The Greeting
 Haslin walks in from the left. He can be clicked at any point, even before he stops.
 > HASLIN: Welcome, traveller. You must be here, searching for the legendary scrolls… Am I right?
 > HASLIN: How do I know? Nature has its ways, traveller.
 > *(nudge)* HASLIN: Erl says you shan't be shy. Just click.
 
-## Scene 2 — Who approaches?
+## Scene 2 - Who approaches?
 > HASLIN: Before we get to business, my name is Haslin, yes, related to Halsin. And yes, also a druid. Who stands before me?
 
 | Traveller | Bonus | Haslin |
@@ -24,17 +24,17 @@ Haslin walks in from the left. He can be clicked at any point, even before he st
 | A crook. | DEX +3 | And definitely not level one. Erl, dice. |
 | Halins, yes, related to Halsin. | WIS +3 | Ha! A small world, I never got along with your side of the family. Blood or not, we shall play either way. |
 
-## Scene 3 — The wager
+## Scene 3 - The wager
 > HASLIN: Two ancient scrolls. Both worth a small fortune, and if it smiles at you, you can have them. What will be our first wager?
 
 Choices: "The scroll." (CV) / "The other scroll." (motivational letter).
 
-## Scene 4 — Tipping the odds
+## Scene 4 - Tipping the odds
 > HASLIN: Shall we?
 
 One trick per game, or "Just roll the dice." Lines and effects: see `dice-game.md`.
 
-## Scene 5 — The roll
+## Scene 5 - The roll
 - Natural 1 (any trick): *Erl cocks his head, blinks. His screeches… a chuckle?*
 - Win: "The dice rarely lie. Enjoy the read, traveller."
 - Tie, Erl on your side: "A tie!… excuse me?! … well… Erl, ekhm… the rule of hospitality commend us, to deem this a victory of the guest… you, that is."
@@ -42,13 +42,13 @@ One trick per game, or "Just roll the dice." Lines and effects: see `dice-game.m
 - Loss: "You know what a druid says after a game of dice? It's dicided, I win!" then "The dice seem fond of you. Shall we play another round?" → "Again."
 - No reactions to specific hands.
 
-**Natural 20** on a trick: the trick succeeds and the next game is rigged — the traveller is dealt a winning hand. If both scrolls were on the table, Haslin then says "Double or nothing, traveller. The other scroll against the one in your satchel." and loses that game too.
+**Natural 20** on a trick: the trick succeeds and the next game is rigged - the traveller is dealt a winning hand. If both scrolls were on the table, Haslin then says "Double or nothing, traveller. The other scroll against the one in your satchel." and loses that game too.
 
-## Scene 6 — The Prize
+## Scene 6 - The Prize
 - "The Scroll of Curriculum Vitae is yours." / "The Scroll of Motivational Letter is yours."
 - One left: "One treasure remains. Same terms. Shall we?"
 
-## Scene 7 — Epilogue
+## Scene 7 - Epilogue
 > HASLIN: Both scrolls are now yours, traveller. I trust you will find a great use for the power stored within them.
 > HASLIN: When you are done here, the cat in the lower section of the city should know how to reach the scribe.
 > HASLIN: Farewell, traveller.

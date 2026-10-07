@@ -183,7 +183,7 @@ export function D20({ roll, modifier, dc, success, onSettled }: Props) {
       {settled && nat === 'nat1' && <div className="d20-banner d20-banner--bad">NATURAL 1</div>}
       {settled && (
         <p className="d20-math">
-          d20 ({roll}){modifier ? ` + ${modifier}` : ''} = {roll + modifier} vs DC {dc} —{' '}
+          d20 ({roll}){modifier ? ` + ${modifier}` : ''} = {roll + modifier} vs DC {dc}:{' '}
           <strong className={success ? 'ok' : 'bad'}>{success ? 'SUCCESS' : 'FAILURE'}</strong>
         </p>
       )}

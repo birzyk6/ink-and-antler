@@ -30,7 +30,7 @@ export default function App() {
   return (
     <>
       <h1 className="sr-only">
-        {SIGN_NAME} — {SIGN_SUBTITLE}
+        {SIGN_NAME} · {SIGN_SUBTITLE}
       </h1>
       <SceneCanvas onReady={setScene} druidOverlay={<DruidOverlay />} onError={() => setSceneFailed(true)} />
       <CatHotspot scene={scene} />
