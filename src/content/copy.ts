@@ -94,8 +94,8 @@ export const copy = {
     reroll: 'Reroll',
     rerollsLeft: (n: number) => `${n} left`,
     reveal: 'Reveal',
-    holdHint: 'Click your dice to hold them, then reroll the rest — or reveal.',
-    stake: 'At stake',
+    holdHint: 'Click your dice to hold them, then reroll the rest, or reveal.',
+    stake: 'Stake',
   },
   hands: {
     five: 'Five of a kind',
@@ -135,7 +135,7 @@ export const copy = {
   druidLabel: 'Talk to Haslin the druid',
   /** Hover nameplates under the characters. */
   nameplates: {
-    druid: { name: 'Haslin', sub: 'Druid · and Erl, his owl' },
+    druid: { name: 'Haslin', sub: 'and Erl, the owl' },
     cat: { name: 'The Cat', sub: 'Pet me' },
   },
   satchel: { title: 'Satchel', empty: 'Empty. For now.', open: 'Open satchel', type: 'Scroll', weight: 'Weight' },
