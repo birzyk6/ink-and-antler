@@ -18,10 +18,10 @@ click Haslin (any time, even mid-entrance)
 ## Tricks (d20 + modifier vs DC)
 | Trick | Check | DC | Success | Failure |
 |---|---|---|---|---|
-| "Surely a guest rolls first. And twice?" | CHA · Persuasion | 12 | +1 reroll this game | - |
-| "Let me take a look at those dice." | INT · Investigation | 14 | +1 to your lowest die at the reveal | - |
+| "Surely a guest rolls first. And twice?" | CHA · Persuasion | 12 | +1 reroll this game | |
+| "Let me take a look at those dice." | INT · Investigation | 14 | +1 to your lowest die at the reveal | |
 | "Do the old switcheroo." | DEX · Sleight of Hand | 15 | your lowest die becomes a 6 | Haslin rerolls once more |
-| "Offer Erl a Rivellon Fry." | WIS · Animal Handling | 8 | ties go to you (Erl resolves them) | - |
+| "Offer Erl a Rivellon Fry." | WIS · Animal Handling | 8 | ties go to you (Erl resolves them) | |
 
 The d20 is weighted: ~45% natural 20. A natural 20 always succeeds **and rigs the next game** (you are dealt a winning hand; rerolls keep it winning). With both scrolls still on the table, Haslin then offers double or nothing for the other scroll, and loses that rigged game too.
 

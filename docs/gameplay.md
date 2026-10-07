@@ -1,10 +1,10 @@
-# Gameplay - how the player traverses the portfolio
+# Gameplay: how the player traverses the portfolio
 
 ## Core loop (one sentence)
 Title sign lights up → druid walks in and greets → click the glowing NPC → pick a
 dialogue option → receive an item → open the satchel → read it.
 
-## World layout - one static scene, no scrolling
+## World layout: one static scene, no scrolling
 
 The whole town (`sprites/bg/bg.png`, 16:9) is one fixed screen, like a point-and-click
 scene. No page scroll, no parallax, no camera moves. Things move *inside* the scene
@@ -12,7 +12,7 @@ scene. No page scroll, no parallax, no camera moves. Things move *inside* the sc
 
 ```
  ┌───────────────────────────────────────────────┐
- │ 🔥[ TAVERN SIGN - title ]🔥      [skip] [♪]   │  sky band (y 0–250)
+ │ 🔥[ TAVERN SIGN (title) ]🔥      [skip] [♪]   │  sky band (y 0–250)
  │        clouds drift slowly  ·  castle          │
  │                                                │
  │ forge · bakery · cloth · veg · house           │  UPPER STREET (y≈600/1080)
@@ -63,7 +63,7 @@ ENTER (walk from left edge → centre)
 | **Inventory panel** | Slides in from right | 4×3 slot grid; empty slots dim; hover → item card (name, rarity colour, flavour, weight) |
 | **Scroll viewer** | Full-screen modal | Scroll unrolls vertically (rod top/bottom); parchment body; handwritten CV; buttons "Roll it up" / "Take a copy (PDF)" |
 | **Toast** | Top centre | "X added to your satchel" |
-| **Quest log** (optional) | Top-left, small | "The Chronicle of Michał" - ☐ Scroll ☐ Letter; ticks as items collected |
+| **Quest log** (optional) | Top-left, small | "The Chronicle of Michał": ☐ Scroll ☐ Letter; ticks as items collected |
 | **Sound toggle** | Top-right | Muted by default; lute loop + text blips + coin sfx |
 | **Skip button** | Top-right, always visible | "Skip the tale →" opens CV directly (recruiter-friendly) |
 
@@ -81,7 +81,7 @@ ENTER (walk from left edge → centre)
 - Fluttering cloth banners at the cloth stall
 - Occasional bird crossing the sky
 
-## Title - hanging tavern sign with torches (chosen)
+## Title: hanging tavern sign with torches (chosen)
 
 **Sprite:** a carved oak board (about 200×70 world px) hanging on two iron chains from a
 wrought-iron bracket that comes in from the top edge. A torch in an iron sconce sits at

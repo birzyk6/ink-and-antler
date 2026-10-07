@@ -1,4 +1,4 @@
-# The Ink & Antler - POC Implementation Plan
+# The Ink & Antler: POC Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -127,7 +127,7 @@ export default defineConfig({
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>The Ink &amp; Antler - Michał Kulijewicz, Writer</title>
+    <title>The Ink &amp; Antler · Michał Kulijewicz, Writer</title>
     <meta name="description" content="Portfolio of Michał Kulijewicz, writer. Meet Ossian the druid, roll the dice, and win the scroll and the letter." />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -384,7 +384,7 @@ If `druid.webp` > 200 KB, lower `quality` to 80 and rerun.
 
 `src/npc/druidSheet.ts`:
 ```ts
-/** Layout of src/assets/druid.webp - keep in sync with scripts/build-assets.mjs. */
+/** Layout of src/assets/druid.webp; keep in sync with scripts/build-assets.mjs. */
 export const FRAME_W = 162;
 export const FRAME_H = 224;
 export const FRAMES = 6;
@@ -965,15 +965,15 @@ export const copy = {
   hint: 'Click the druid to speak.',
   nudge: "Pim says you're allowed to click. Pim is rarely wrong.",
   satchelHint: 'Open your satchel to read it.',
-  originPrompt: 'Before we trade words - who approaches?',
+  originPrompt: 'Before we trade words, who approaches?',
   origins: {
-    CHA: { label: 'A recruiter, from a studio in Ghent.', reply: 'Ghent! Pim - the good dice. The ones without the dent.' },
+    CHA: { label: 'A recruiter, from a studio in Ghent.', reply: 'Ghent! Pim, the good dice. The ones without the dent.' },
     INT: { label: 'A scholar. I read the fine print.', reply: "Then you'll enjoy these dice. They have very fine print." },
     DEX: { label: 'Nobody. Just passing through.', reply: 'Nobody has quick fingers. Keep them where Pim can see them.' },
     WIS: { label: 'An old friend of the forest.', reply: "Pim doesn't remember you. Pim remembers everyone. Interesting." },
   } satisfies Record<Ability, { label: string; reply: string }>,
   wagerPrompt: [
-    `Two treasures. The deeds of ${NAME}, written in a steady hand - and a letter, sealed, that explains why.`,
+    `Two treasures. The deeds of ${NAME}, written in a steady hand, and a letter, sealed, that explains why.`,
     'Sell them? Coin is dull. Chance has manners. Which will you play for?',
   ],
   wagerAgain: 'One treasure left. Same terms. Which will you play for?',
@@ -986,7 +986,7 @@ export const copy = {
   back: 'Back to the wager.',
   farewell: 'Not today.',
   farewellFinal: 'Farewell.',
-  checkPrompt: 'Before the bones fall - care to tip the odds?',
+  checkPrompt: 'Before the bones fall, care to tip the odds?',
   justRoll: 'Just roll the bones.',
   checks: {
     persuasion: { label: 'Surely a guest rolls first. And twice?', success: 'Fine. Roll twice. Pim, stop looking at me like that.', fail: 'A guest, yes. A fool, no.' },
@@ -1009,7 +1009,7 @@ export const copy = {
       '…Twenty. Twenty. Pim, did you sell them the good die again?',
       'Fine. Fine! Take both. The scroll and the letter. A roll like that deserves the whole chronicle.',
     ],
-    last: ["Twenty! Take the other one too - I mean, it's the only one left, but take it triumphantly."],
+    last: ["Twenty! Take the other one too. I mean, it's the only one left, but take it triumphantly."],
     take: 'Take them.',
   },
   dice: {
@@ -1017,7 +1017,7 @@ export const copy = {
     you: 'You',
     reroll: (n: number) => `Reroll unheld (${n} left)`,
     reveal: 'Reveal the bones',
-    holdHint: 'Click your dice to hold them, then reroll the rest - or reveal.',
+    holdHint: 'Click your dice to hold them, then reroll the rest, or reveal.',
   },
   hands: { triple: 'Three of a kind', run: 'A run', pair: 'A pair', sum: 'Only the sum' } satisfies Record<HandRank, string>,
   win: 'The bones have spoken. They said your name, which is rude of them.',
@@ -1070,9 +1070,9 @@ export const CV: { title: string; subtitle: string; sections: DocSection[] } = {
   title: NAME,
   subtitle: 'Writer · Teller of Tales · Weaver of Quests',
   sections: [
-    { heading: 'Deeds', lines: ['[Role] - [Studio], [years]', '[Quest & dialogue writing for project]', '[Worldbuilding for project]'] },
+    { heading: 'Deeds', lines: ['[Role] at [Studio], [years]', '[Quest & dialogue writing for project]', '[Worldbuilding for project]'] },
     { heading: 'Tomes', lines: ['[Short story], [publication], [year]', '[Interactive fiction], [platform], [year]'] },
-    { heading: 'Tongues', lines: ['Polish - native', 'English - fluent'] },
+    { heading: 'Tongues', lines: ['Polish (native)', 'English (fluent)'] },
     { heading: 'Crafts', lines: ['Branching dialogue', 'Character voice', 'Barks & systemic lines', 'Ink / Twine / articy:draft'] },
   ],
 };
@@ -1081,7 +1081,7 @@ export const CV: { title: string; subtitle: string; sections: DocSection[] } = {
 export const MOTIVATION_LETTER = {
   salutation: 'To the good people of Larian,',
   paragraphs: [
-    '[Placeholder - the real letter goes here.] I have spent years learning how one line of dialogue can make a player laugh, hesitate, or reload a save just to hear it again.',
+    '[Placeholder: the real letter goes here.] I have spent years learning how one line of dialogue can make a player laugh, hesitate, or reload a save just to hear it again.',
     'Your worlds are the ones I measure my own writing against: characters who want things, choices that answer back, and jokes that are allowed to hurt a little.',
   ],
   signoff: 'Yours, in ink and earnest,',
@@ -2660,7 +2660,7 @@ export default function App() {
   return (
     <>
       <h1 className="sr-only">
-        {SIGN_NAME} - {SIGN_SUBTITLE}
+        {SIGN_NAME} · {SIGN_SUBTITLE}
       </h1>
       <SceneCanvas onReady={setScene} druidOverlay={<DruidOverlay />} />
     </>
@@ -2949,7 +2949,7 @@ export function D20({ roll, modifier, dc, success, onSettled }: Props) {
       {settled && nat === 'nat1' && <div className="d20-banner d20-banner--bad">NATURAL 1</div>}
       {settled && (
         <p className="d20-math">
-          d20 ({roll}){modifier ? ` + ${modifier}` : ''} = {roll + modifier} vs DC {dc} - {' '}
+          d20 ({roll}){modifier ? ` + ${modifier}` : ''} = {roll + modifier} vs DC {dc}:{' '}
           <strong className={success ? 'ok' : 'bad'}>{success ? 'SUCCESS' : 'FAILURE'}</strong>
         </p>
       )}
@@ -3283,7 +3283,7 @@ export default function App() {
   return (
     <>
       <h1 className="sr-only">
-        {SIGN_NAME} - {SIGN_SUBTITLE}
+        {SIGN_NAME} · {SIGN_SUBTITLE}
       </h1>
       <SceneCanvas onReady={setScene} druidOverlay={<DruidOverlay />} />
       <DialoguePanel />
@@ -3794,7 +3794,7 @@ export default function App() {
   return (
     <>
       <h1 className="sr-only">
-        {SIGN_NAME} - {SIGN_SUBTITLE}
+        {SIGN_NAME} · {SIGN_SUBTITLE}
       </h1>
       <SceneCanvas onReady={setScene} druidOverlay={<DruidOverlay />} />
       <Satchel />
@@ -4241,7 +4241,7 @@ export default function App() {
   return (
     <>
       <h1 className="sr-only">
-        {SIGN_NAME} - {SIGN_SUBTITLE}
+        {SIGN_NAME} · {SIGN_SUBTITLE}
       </h1>
       <SceneCanvas onReady={setScene} druidOverlay={<DruidOverlay />} />
       <Satchel />
@@ -4790,7 +4790,7 @@ export default function App() {
   return (
     <>
       <h1 className="sr-only">
-        {SIGN_NAME} - {SIGN_SUBTITLE}
+        {SIGN_NAME} · {SIGN_SUBTITLE}
       </h1>
       <SceneCanvas onReady={setScene} druidOverlay={<DruidOverlay />} />
       <SignpostHotspot scene={scene} />
